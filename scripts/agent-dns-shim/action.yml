@@ -1,0 +1,25 @@
+---
+name: Preserve hardener agent DNS
+description: >-
+  Own one late resolved drop-in on the observed ephemeral hosted Linux topology
+inputs:
+  hosted:
+    description: Explicit runner.environment value; requires github-hosted
+    required: true
+  mode:
+    description: apply installs on recognized hosts; observe only records
+    default: apply
+outputs:
+  applicable:
+    description: Whether the empty platform DNS reset was positively recognized
+  applied:
+    description: Whether owned installation was acknowledged in pre
+  disposition:
+    description: Main phase result; rollback is connectivity safety only
+runs:
+  using: node24
+  pre: pre.cjs
+  pre-if: always()
+  main: main.cjs
+  post: post.cjs
+  post-if: always()

@@ -1,0 +1,87 @@
+[
+  {
+    "name": "C0-1",
+    "job": 121578043047,
+    "sourceRun": 40324625326,
+    "sourceLogSHA256": "acbd7f205ffd05ca62ae225bbf0c9bc10759238e702bc063026ed9266646a1cf",
+    "purpose": "Record-format calibration only; never new native-canary observations.",
+    "expected": "PASS",
+    "inputs": {
+      "agentLog": "Mon, 26 Oct 2026 12:43:02 GMT:ip address dropped: 104.20.23.154\nMon, 26 Oct 2026 12:43:02 GMT:endpoint called ip address:port 104.20.23.154:443, domain: , pid: 3645, process: curl, status: \n",
+      "verifyTime": "2026-10-26T12:42:58.816Z",
+      "negativeAddress": "104.20.23.154\n",
+      "negativeReport": "verdict=CONFIRMED_BLOCK curl_rc=7 address=104.20.23.154 pid=3645 agent=active\n",
+      "negativeEvents": "Mon, 26 Oct 2026 12:43:02 GMT:ip address dropped: 104.20.23.154\nMon, 26 Oct 2026 12:43:02 GMT:endpoint called ip address:port 104.20.23.154:443, domain: , pid: 3645, process: curl, status: \n",
+      "negativeStepStart": "2026-10-26T12:42:58Z",
+      "negativeVerdictTime": "2026-10-26T12:43:05.4339731Z"
+    }
+  },
+  {
+    "name": "C0-2",
+    "job": 121578043531,
+    "sourceRun": 40324625326,
+    "sourceLogSHA256": "d9ab96aef535925174135f5e33d6b0c10a024d131fd814ae8e084efd722afdea",
+    "purpose": "Record-format calibration only; never new native-canary observations.",
+    "expected": "PASS",
+    "inputs": {
+      "agentLog": "Mon, 26 Oct 2026 12:43:09 GMT:ip address dropped: 172.66.147.243\nMon, 26 Oct 2026 12:43:09 GMT:endpoint called ip address:port 172.66.147.243:443, domain: , pid: 3418, process: curl, status: \n",
+      "verifyTime": "2026-10-26T12:43:05.413Z",
+      "negativeAddress": "172.66.147.243\n",
+      "negativeReport": "verdict=CONFIRMED_BLOCK curl_rc=7 address=172.66.147.243 pid=3418 agent=active\n",
+      "negativeEvents": "Mon, 26 Oct 2026 12:43:09 GMT:ip address dropped: 172.66.147.243\nMon, 26 Oct 2026 12:43:09 GMT:endpoint called ip address:port 172.66.147.243:443, domain: , pid: 3418, process: curl, status: \n",
+      "negativeStepStart": "2026-10-26T12:43:03Z",
+      "negativeVerdictTime": "2026-10-26T12:43:12.7718271Z"
+    }
+  },
+  {
+    "name": "C0-3",
+    "job": 121578043311,
+    "sourceRun": 40324625326,
+    "sourceLogSHA256": "4df35fceee444f0f950d966801a21acde1feb2aace1487fbcf9bebf7020f97cd",
+    "purpose": "Record-format calibration only; never new native-canary observations.",
+    "expected": "PASS",
+    "inputs": {
+      "agentLog": "Mon, 26 Oct 2026 12:43:01 GMT:ip address dropped: 172.66.147.243\nMon, 26 Oct 2026 12:43:01 GMT:endpoint called ip address:port 172.66.147.243:443, domain: , pid: 3625, process: curl, status: \n",
+      "verifyTime": "2026-10-26T12:42:58.208Z",
+      "negativeAddress": "172.66.147.243\n",
+      "negativeReport": "verdict=CONFIRMED_BLOCK curl_rc=7 address=172.66.147.243 pid=3625 agent=active\n",
+      "negativeEvents": "Mon, 26 Oct 2026 12:43:01 GMT:endpoint called ip address:port 20.209.226.1:443, domain: productionresultssa0.blob.core.windows.net., pid: 3584, process: node, status: \nMon, 26 Oct 2026 12:43:01 GMT:ip address dropped: 172.66.147.243\nMon, 26 Oct 2026 12:43:01 GMT:endpoint called ip address:port 172.66.147.243:443, domain: , pid: 3625, process: curl, status: \n",
+      "negativeStepStart": "2026-10-26T12:42:57Z",
+      "negativeVerdictTime": "2026-10-26T12:43:04.4935392Z"
+    }
+  },
+  {
+    "name": "C0-4",
+    "job": 121578043357,
+    "sourceRun": 40324625326,
+    "sourceLogSHA256": "dc933b8e3d64e20dda42a6a90edd22185d8e740bc63efd1eae40145d49efd448",
+    "purpose": "Record-format calibration only; never new native-canary observations.",
+    "expected": "PASS",
+    "inputs": {
+      "agentLog": "Mon, 26 Oct 2026 12:43:03 GMT:ip address dropped: 104.20.23.154\nMon, 26 Oct 2026 12:43:03 GMT:endpoint called ip address:port 104.20.23.154:443, domain: , pid: 3643, process: curl, status: \n",
+      "verifyTime": "2026-10-26T12:43:00.442Z",
+      "negativeAddress": "104.20.23.154\n",
+      "negativeReport": "verdict=CONFIRMED_BLOCK curl_rc=7 address=104.20.23.154 pid=3643 agent=active\n",
+      "negativeEvents": "Mon, 26 Oct 2026 12:43:03 GMT:endpoint called ip address:port 20.209.226.129:443, domain: productionresultssa0.blob.core.windows.net., pid: 3602, process: node, status: \nMon, 26 Oct 2026 12:43:03 GMT:ip address dropped: 104.20.23.154\nMon, 26 Oct 2026 12:43:03 GMT:endpoint called ip address:port 104.20.23.154:443, domain: , pid: 3643, process: curl, status: \n",
+      "negativeStepStart": "2026-10-26T12:43:00Z",
+      "negativeVerdictTime": "2026-10-26T12:43:06.6220517Z"
+    }
+  },
+  {
+    "name": "I1-1",
+    "job": 121578043487,
+    "sourceRun": 40324625326,
+    "sourceLogSHA256": "499517589c94e0877473109f9d45c2e6bd2ae475c90b6c21f7767cedbde368d9",
+    "purpose": "Record-format calibration only; never new native-canary observations.",
+    "expected": "FAIL",
+    "inputs": {
+      "agentLog": "Mon, 26 Oct 2026 12:43:29 GMT:ip address dropped: 168.63.129.16\nMon, 26 Oct 2026 12:43:29 GMT:endpoint called ip address:port 168.63.129.16:53, domain: , pid: 2461, process: systemd-resolved, status: \nMon, 26 Oct 2026 12:43:29 GMT:ip address dropped: 140.82.114.22\nMon, 26 Oct 2026 12:43:29 GMT:endpoint called ip address:port 172.66.147.243:0, domain: , pid: 3212, process: getent, status: \nMon, 26 Oct 2026 12:43:29 GMT:endpoint called ip address:port 104.20.23.154:0, domain: , pid: 3212, process: getent, status: \nMon, 26 Oct 2026 12:43:30 GMT:endpoint called ip address:port 140.82.114.22:443, domain: , pid: 2114, process: Runner.Worker, status: \nMon, 26 Oct 2026 12:43:30 GMT:ip address dropped: 140.82.112.3\nMon, 26 Oct 2026 12:43:30 GMT:endpoint called ip address:port 140.82.112.3:443, domain: , pid: 3444, process: git-remote-http, status: \nMon, 26 Oct 2026 12:43:43 GMT:endpoint called ip address:port 140.82.112.3:443, domain: , pid: 3451, process: git-remote-http, status: \nMon, 26 Oct 2026 12:43:59 GMT:endpoint called ip address:port 140.82.112.3:443, domain: , pid: 3561, process: git-remote-http, status: \nMon, 26 Oct 2026 12:43:59 GMT:ip address dropped: 140.82.113.6\nMon, 26 Oct 2026 12:44:00 GMT:endpoint called ip address:port 140.82.113.6:443, domain: , pid: 3679, process: curl, status: \nMon, 26 Oct 2026 12:44:00 GMT:ip address dropped: 140.82.114.21\nMon, 26 Oct 2026 12:44:00 GMT:endpoint called ip address:port 140.82.114.21:443, domain: , pid: 3699, process: node, status: \nMon, 26 Oct 2026 12:44:00 GMT:endpoint called ip address:port 140.82.114.21:443, domain: , pid: 3730, process: node, status: \nMon, 26 Oct 2026 12:44:00 GMT:ip address dropped: 104.20.23.154\nMon, 26 Oct 2026 12:44:00 GMT:endpoint called ip address:port 104.20.23.154:443, domain: , pid: 3806, process: curl, status: \nMon, 26 Oct 2026 12:44:03 GMT:endpoint called ip address:port 140.82.114.21:443, domain: , pid: 2114, process: Runner.Worker, status: \nMon, 26 Oct 2026 12:44:07 GMT:endpoint called ip address:port 140.82.114.21:443, domain: , pid: 4130, process: node, status: \n",
+      "verifyTime": "2026-10-26T12:43:29.836Z",
+      "negativeAddress": "104.20.23.154\n",
+      "negativeReport": "verdict=CONFIRMED_BLOCK curl_rc=7 address=104.20.23.154 pid=3806 agent=active\n",
+      "negativeEvents": "Mon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa119.blob.core.windows.net., ip address: 20.209.143.1, TTL: 43\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa142.blob.core.windows.net., ip address: 20.60.241.1, TTL: 30\nMon, 26 Oct 2026 12:44:00 GMT:endpoint called ip address:port 140.82.114.21:443, domain: , pid: 3730, process: node, status: \nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa169.blob.core.windows.net., ip address: 20.209.18.97, TTL: 42\nMon, 26 Oct 2026 12:44:00 GMT:ip address dropped: 104.20.23.154\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa19.blob.core.windows.net., ip address: 20.209.112.225, TTL: 30\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa164.blob.core.windows.net., ip address: 20.209.143.65, TTL: 41\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa112.blob.core.windows.net., ip address: 20.60.241.1, TTL: 30\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa5.blob.core.windows.net., ip address: 20.209.112.225, TTL: 30\nMon, 26 Oct 2026 12:44:00 GMT:endpoint called ip address:port 104.20.23.154:443, domain: , pid: 3806, process: curl, status: \nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa137.blob.core.windows.net., ip address: 20.209.143.65, TTL: 41\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa114.blob.core.windows.net., ip address: 57.150.128.1, TTL: 35\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa101.blob.core.windows.net., ip address: 20.60.241.1, TTL: 30\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa182.blob.core.windows.net., ip address: 20.60.194.65, TTL: 30\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa198.blob.core.windows.net., ip address: 20.209.143.193, TTL: 32\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa125.blob.core.windows.net., ip address: 57.150.105.193, TTL: 35\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa134.blob.core.windows.net., ip address: 20.209.143.65, TTL: 41\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa129.blob.core.windows.net., ip address: 57.150.42.129, TTL: 32\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa30.blob.core.windows.net., ip address: 20.209.178.193, TTL: 42\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa120.blob.core.windows.net., ip address: 57.150.128.1, TTL: 35\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa135.blob.core.windows.net., ip address: 20.209.37.97, TTL: 42\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa8.blob.core.windows.net., ip address: 57.150.4.193, TTL: 32\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa130.blob.core.windows.net., ip address: 20.209.143.65, TTL: 32\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa186.blob.core.windows.net., ip address: 20.209.36.1, TTL: 47\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa196.blob.core.windows.net., ip address: 20.209.184.1, TTL: 43\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa1.blob.core.windows.net., ip address: 20.209.226.129, TTL: 30\nMon, 26 Oct 2026 12:44:00 GMT:domain resolved: productionresultssa118.blob.core.windows.net., ip address: 20.209.99.97, TTL: 41\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa170.blob.core.windows.net., ip address: 20.60.241.1, TTL: 30\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa185.blob.core.windows.net., ip address: 20.209.99.97, TTL: 42\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa156.blob.core.windows.net., ip address: 20.209.143.65, TTL: 31\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa117.blob.core.windows.net., ip address: 57.150.128.1, TTL: 34\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa168.blob.core.windows.net., ip address: 20.209.184.1, TTL: 42\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa145.blob.core.windows.net., ip address: 20.209.99.97, TTL: 42\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa146.blob.core.windows.net., ip address: 20.60.194.161, TTL: 30\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa42.blob.core.windows.net., ip address: 20.209.75.97, TTL: 56\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa41.blob.core.windows.net., ip address: 135.130.36.161, TTL: 34\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa108.blob.core.windows.net., ip address: 20.60.194.161, TTL: 46\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa102.blob.core.windows.net., ip address: 20.209.143.1, TTL: 40\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa151.blob.core.windows.net., ip address: 57.150.104.33, TTL: 34\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa39.blob.core.windows.net., ip address: 57.150.4.193, TTL: 30\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa192.blob.core.windows.net., ip address: 57.150.42.129, TTL: 31\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa17.blob.core.windows.net., ip address: 20.150.82.228, TTL: 56\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa157.blob.core.windows.net., ip address: 20.209.184.1, TTL: 40\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa178.blob.core.windows.net., ip address: 20.209.143.65, TTL: 31\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa113.blob.core.windows.net., ip address: 20.209.184.1, TTL: 40\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa171.blob.core.windows.net., ip address: 57.150.128.1, TTL: 30\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa158.blob.core.windows.net., ip address: 57.150.105.193, TTL: 30\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa100.blob.core.windows.net., ip address: 20.60.194.161, TTL: 30\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa44.blob.core.windows.net., ip address: 57.150.87.1, TTL: 56\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa173.blob.core.windows.net., ip address: 20.60.194.161, TTL: 46\nMon, 26 Oct 2026 12:44:01 GMT:domain resolved: productionresultssa159.blob.core.windows.net., ip address: 20.209.143.65, TTL: 40\n",
+      "negativeStepStart": "2026-10-26T12:43:29Z",
+      "negativeVerdictTime": "2026-10-26T12:44:03.4186849Z"
+    }
+  }
+]

@@ -3,6 +3,13 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { createHash } = require("node:crypto");
 const directoryNames = ["ci1203", "ci1203-synthetic-induce", "ci1203-synthetic-treatment"];
+const nativeDirectoryNames = ["ci1203", "ci1203-workaround", "lgtm-agent-dns-shim"];
+function evidenceProfile(profile) {
+  if (profile === "synthetic") return { directories: directoryNames, prefix: "ci1203-synthetic" };
+  if (profile === "native")
+    return { directories: nativeDirectoryNames, prefix: "ci1203-workaround" };
+  throw new Error("unknown evidence profile");
+}
 const digest = (buffer) => createHash("sha256").update(buffer).digest("hex");
 const tokenPattern =
   /gh[pousr]_|github_pat_|Authorization\s*:|Bearer\s+|OneTimeKey|ACTIONS_RUNTIME|\bsecret\b/i;
@@ -13,18 +20,24 @@ function printEvidence({
   manifest,
   emit = console.log,
   budget = { files: 0, bytes: 0 },
+  profile = "synthetic",
 }) {
-  if (!directoryNames.includes(name)) throw new Error("unknown evidence directory");
+  const { directories, prefix } = evidenceProfile(profile);
+  if (!directories.includes(name)) throw new Error("unknown evidence directory");
   if (!fs.lstatSync(directory).isDirectory()) throw new Error("evidence directory is not regular");
   const entries = new Map();
-  for (const line of manifest.trim().split("\n")) {
+  for (const line of profile === "native" && manifest === "" ? [] : manifest.trim().split("\n")) {
     const match = /^([a-f0-9]{64})  (?:\.\/)?([\w.-]+\.(?:json|txt))$/.exec(line);
     if (!match || entries.has(match[2])) throw new Error("invalid evidence manifest entry");
     entries.set(match[2], match[1]);
   }
   const selected = fs
     .readdirSync(directory)
-    .filter((f) => f === "SHA256SUMS" || (name === "ci1203" ? /\.txt$/ : /\.(?:txt|json)$/).test(f))
+    .filter(
+      (f) =>
+        f === "SHA256SUMS" ||
+        (profile === "synthetic" && name === "ci1203" ? /\.txt$/ : /\.(?:txt|json)$/).test(f),
+    )
     .sort();
   if (
     JSON.stringify(selected.filter((f) => f !== "SHA256SUMS")) !==
@@ -47,7 +60,7 @@ function printEvidence({
       const stat = fs.fstatSync(fd);
       if (!stat.isFile() || stat.size > 256 * 1024) {
         emit(
-          `ci1203-synthetic-FILE-REFUSED ${JSON.stringify({ directory: name, name: file, bytes: stat.size, expectedSha256: entries.get(file), reason: "file type or size" })}`,
+          `${prefix}-FILE-REFUSED ${JSON.stringify({ directory: name, name: file, bytes: stat.size, expectedSha256: entries.get(file), reason: "file type or size" })}`,
         );
         throw new Error("evidence must be a bounded regular file");
       }
@@ -72,7 +85,7 @@ function printEvidence({
       tokenPattern.test(data.toString("utf8"))
     ) {
       emit(
-        `ci1203-synthetic-FILE-REFUSED ${JSON.stringify({ directory: name, name: file, bytes: data.length, sha256, reason: "byte limit or token pattern" })}`,
+        `${prefix}-FILE-REFUSED ${JSON.stringify({ directory: name, name: file, bytes: data.length, sha256, reason: "byte limit or token pattern" })}`,
       );
       throw new Error("evidence copy incomplete");
     }
@@ -80,19 +93,20 @@ function printEvidence({
       throw new Error(`evidence changed after freeze: ${file}`);
     const base64 = data.toString("base64");
     const parts = Math.max(1, Math.ceil(base64.length / 4096));
-    const begin = `ci1203-synthetic-FILE-BEGIN ${JSON.stringify({ directory: name, name: file, bytes: data.length, sha256, parts })}`;
+    const begin = `${prefix}-FILE-BEGIN ${JSON.stringify({ directory: name, name: file, bytes: data.length, sha256, parts })}`;
     begins.push(begin);
     emit(begin);
     for (let index = 0; index < parts; index += 1)
       emit(
-        `ci1203-synthetic-FILE ${JSON.stringify({ directory: name, name: file, bytes: data.length, sha256, index, parts, base64: base64.slice(index * 4096, (index + 1) * 4096) })}`,
+        `${prefix}-FILE ${JSON.stringify({ directory: name, name: file, bytes: data.length, sha256, index, parts, base64: base64.slice(index * 4096, (index + 1) * 4096) })}`,
       );
-    emit(`ci1203-synthetic-FILE-END ${JSON.stringify({ directory: name, name: file, sha256 })}`);
+    emit(`${prefix}-FILE-END ${JSON.stringify({ directory: name, name: file, sha256 })}`);
   }
   return begins;
 }
 
-function copyEvidence({ root, emit = console.log }) {
+function copyEvidence({ root, emit = console.log, profile = "synthetic" }) {
+  const { directories, prefix } = evidenceProfile(profile);
   const budget = { files: 0, bytes: 0 };
   const begins = [];
   let complete = false;
@@ -100,9 +114,18 @@ function copyEvidence({ root, emit = console.log }) {
   try {
     const unknown = fs
       .readdirSync(root)
-      .filter((name) => name.startsWith("ci1203-synthetic-") && !directoryNames.includes(name));
-    if (unknown.length) throw new Error("unknown synthetic upload directory");
-    for (const name of directoryNames) {
+      .filter(
+        (name) =>
+          name.startsWith(profile === "native" ? "ci1203-workaround" : "ci1203-synthetic-") &&
+          !directories.includes(name),
+      );
+    if (unknown.length)
+      throw new Error(
+        profile === "native"
+          ? "unknown native upload directory"
+          : "unknown synthetic upload directory",
+      );
+    for (const name of directories) {
       const directory = path.join(root, name);
       if (
         !fs.lstatSync(directory).isDirectory() ||
@@ -114,8 +137,9 @@ function copyEvidence({ root, emit = console.log }) {
         name,
         manifest: fs.readFileSync(path.join(directory, "SHA256SUMS"), "utf8"),
         budget,
+        profile,
         emit: (line) => {
-          if (line.startsWith("ci1203-synthetic-FILE-BEGIN ")) begins.push(line);
+          if (line.startsWith(`${prefix}-FILE-BEGIN `)) begins.push(line);
           emit(line);
         },
       });
@@ -130,7 +154,7 @@ function copyEvidence({ root, emit = console.log }) {
     beginsSha256: digest(Buffer.from(begins.join("\n") + "\n")),
     error,
   };
-  emit(`ci1203-synthetic-COPY ${JSON.stringify(record)}`);
+  emit(`${prefix}-COPY ${JSON.stringify(record)}`);
   if (!complete) throw new Error(`console evidence incomplete: ${error}`);
   return record;
 }

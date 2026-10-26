@@ -151,3 +151,126 @@ test("extra upload files and unknown synthetic directories cannot be omitted sil
   fs.mkdirSync(path.join(root, "ci1203-synthetic-unknown"));
   assert.throws(() => copyEvidence({ root, emit: () => {} }), /unknown synthetic upload directory/);
 });
+
+test("default synthetic console bytes equal the frozen cab5432 golden transcript", (t) => {
+  const root = jobFixture(t);
+  const implicit = [];
+  const explicit = [];
+  copyEvidence({ root, emit: (line) => implicit.push(line) });
+  copyEvidence({ root, profile: "synthetic", emit: (line) => explicit.push(line) });
+  assert.deepEqual(implicit, explicit);
+  // Generated from evidence.cjs at cab5432 using jobFixture, before extension.
+  assert.equal(
+    createHash("sha256")
+      .update(implicit.join("\n") + "\n")
+      .digest("hex"),
+    "6bad6aba742be10b2a259472d63ef284580101bd0a8663aee043c25033313135",
+  );
+});
+
+function nativeFixture(t) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "ci1203-native-copy-"));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  for (const name of ["ci1203", "ci1203-workaround", "lgtm-agent-dns-shim"]) {
+    const dir = path.join(root, name);
+    fs.mkdirSync(dir);
+    const data = Buffer.from(
+      JSON.stringify({ owner: "f".repeat(64), nonce: "u-0123456789abcdef.example.com" }) + "\n",
+    );
+    fs.writeFileSync(path.join(dir, "state.json"), data);
+    fs.writeFileSync(
+      path.join(dir, "SHA256SUMS"),
+      `${createHash("sha256").update(data).digest("hex")}  state.json\n`,
+    );
+  }
+  return root;
+}
+
+test("native profile copies every json in fixed directories with native-only labels", (t) => {
+  const root = nativeFixture(t);
+  const lines = [];
+  assert.equal(
+    copyEvidence({ root, profile: "native", emit: (line) => lines.push(line) }).complete,
+    true,
+  );
+  assert.ok(lines.every((line) => line.startsWith("ci1203-workaround-")));
+  const chunks = lines
+    .filter((line) => line.startsWith("ci1203-workaround-FILE "))
+    .map((line) => JSON.parse(line.split("ci1203-workaround-FILE ")[1]));
+  for (const name of ["ci1203", "ci1203-workaround", "lgtm-agent-dns-shim"])
+    for (const file of ["state.json", "SHA256SUMS"])
+      assert.deepEqual(
+        Buffer.from(
+          chunks
+            .filter((chunk) => chunk.directory === name && chunk.name === file)
+            .map((chunk) => chunk.base64)
+            .join(""),
+          "base64",
+        ),
+        fs.readFileSync(path.join(root, name, file)),
+      );
+  assert.throws(() => copyEvidence({ root, emit: () => {} }), /incomplete/);
+  assert.throws(
+    () => copyEvidence({ root, profile: "arbitrary", emit: () => {} }),
+    /unknown evidence profile/,
+  );
+});
+
+test("native profile rejects leaks, symlinks and any unmanifested json", (t) => {
+  const root = nativeFixture(t);
+  const dir = path.join(root, "ci1203");
+  fs.writeFileSync(path.join(dir, "omitted.json"), "{}\n");
+  assert.throws(
+    () => copyEvidence({ root, profile: "native", emit: () => {} }),
+    /upload set differs/,
+  );
+  fs.unlinkSync(path.join(dir, "omitted.json"));
+  const data = Buffer.from("github_pat_never-print-this\n");
+  fs.writeFileSync(path.join(dir, "state.json"), data);
+  fs.writeFileSync(
+    path.join(dir, "SHA256SUMS"),
+    `${createHash("sha256").update(data).digest("hex")}  state.json\n`,
+  );
+  const lines = [];
+  assert.throws(
+    () => copyEvidence({ root, profile: "native", emit: (line) => lines.push(line) }),
+    /incomplete/,
+  );
+  assert.ok(!lines.join("\n").includes(data.toString("base64")));
+  assert.ok(!lines.join("\n").includes("never-print-this"));
+  fs.unlinkSync(path.join(dir, "state.json"));
+  fs.symlinkSync("/etc/hosts", path.join(dir, "state.json"));
+  assert.throws(() => copyEvidence({ root, profile: "native", emit: () => {} }), /incomplete/);
+});
+
+test("native profile accepts empty no-op inventories and shares whole-job caps", (t) => {
+  const root = nativeFixture(t);
+  const dir = path.join(root, "lgtm-agent-dns-shim");
+  fs.unlinkSync(path.join(dir, "state.json"));
+  fs.writeFileSync(path.join(dir, "SHA256SUMS"), "");
+  assert.equal(copyEvidence({ root, profile: "native", emit: () => {} }).complete, true);
+  const manifest = fs.readFileSync(path.join(root, "ci1203", "SHA256SUMS"), "utf8");
+  assert.throws(
+    () =>
+      printEvidence({
+        directory: path.join(root, "ci1203"),
+        name: "ci1203",
+        manifest,
+        profile: "native",
+        budget: { files: 0, bytes: 1024 * 1024 },
+        emit: () => {},
+      }),
+    /incomplete/,
+  );
+  assert.throws(
+    () =>
+      printEvidence({
+        directory: path.join(root, "ci1203"),
+        name: "ci1203-synthetic-induce",
+        manifest,
+        profile: "native",
+        emit: () => {},
+      }),
+    /unknown evidence directory/,
+  );
+});
