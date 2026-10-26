@@ -74,3 +74,54 @@ sha256sum -c vendor/SHA256SUMS
 
 All checks on a PR must pass under the owner's merge policy, including checks
 GitHub does not designate required. This experiment changes no production repos.
+
+## Counterfactual candidate (local draft)
+
+The first run is complete: five affected westus2 captures, one full ordinary
+control, and eighteen screening-only jobs. Both independent causality reviews
+confirm an existing `90-egress-proxy.conf` empty `DNS=` reset overrides the
+hardener's main-file global DNS setting. This establishes an interaction, not
+exclusive vendor responsibility or a validated fix.
+
+`dns-counterfactual.yml` is a separate, unpublished candidate. The original
+workflow and vendored probe remain unchanged. Its new helper pins identify
+signed local source awaiting independent Sol verification.
+The original dispatch allowance is spent; no second execution is authorized.
+
+Odd samples are treatment, even samples unchanged controls. Before hardener pre,
+treatment requires the exact captured topology and empty DNS reset; unknown or
+different setups are `NOT_APPLICABLE`. It atomically adds only an owned later
+`DNS=127.0.0.1` drop-in and relies on the hardener's normal restart. No allowlist,
+firewall, experiment service, resolver symlink or original config is changed.
+Successful checkout alone never demonstrates a healthy DNS path.
+
+An action without pre registers a guard post during main, above the hardener's
+pre-registered post in the runner's LIFO stack. It removes the override without
+restarting resolved, preserving the live agent path until hardener cleanup.
+An earlier action's fallback post executes after the hardener. Unless guard
+removal was positively acknowledged and saved, it treats the durable mutation
+intent as requiring a reload. A lost unlink acknowledgement is
+reconciled by ownership-aware absence inspection and at most one more removal
+attempt. Once absence is established, it reloads resolved and preserves the
+original error as a failed job. It verifies original main/platform config hashes
+and original effective global DNS. Failures
+remain failures, including partial hardener initialization that cannot restore.
+Post receipts are hashed and printed to console separately from frozen probe
+files; collect terminal logs, not just the pre-post diagnostic artifact.
+
+This ordering follows `actions/runner` v2.338.0 `ActionRunner.RunAsync`
+(post registered before pre/main handler execution), and
+`ExecutionContext.RegisterPostJobStep` (first registration wins; LIFO stack).
+Local lifecycle tests simulate these paths; hosted ordering remains unproven.
+
+A future treatment pass needs fresh agent-path wire evidence, successful
+checkout/API/artifact roundtrip, the unchanged strict denied-destination control,
+verified full evidence upload, cleanup receipts and externally confirmed prompt
+completion. Require affected captures in both arms; an unbalanced or empty
+sample is inconclusive and does not authorize replenishment or rollout.
+
+Additional local tests:
+
+```sh
+node --test --experimental-test-coverage scripts/resolver-counterfactual/control.test.cjs
+```
