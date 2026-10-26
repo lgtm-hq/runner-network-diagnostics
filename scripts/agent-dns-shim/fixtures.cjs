@@ -1,5 +1,6 @@
 "use strict";
 // Local deterministic observations; no command execution or frozen imports.
+const assert = require("node:assert/strict");
 const { createHash } = require("node:crypto");
 const { MAIN, PLATFORM, TARGET } = require("./constants.cjs");
 const { bytes } = require("./root-file.cjs");
@@ -29,7 +30,7 @@ function files(content = cat()) {
 }
 function harness() {
   let saved;
-  let clock = 0;
+  let clock = 0.314159;
   let owned;
   let main = MAIN_BEFORE;
   let dns = "Global:\n";
@@ -74,7 +75,11 @@ function harness() {
       return structuredClone(owned || { present: false });
     },
     bootMicros: () => 100,
-    status: () => ok("Initialized\n"),
+    status: (budget) => {
+      if (budget !== undefined)
+        assert.ok(Number.isSafeInteger(budget) && budget >= 1 && budget <= 2000);
+      return ok("Initialized\n");
+    },
     listener: () => ok(LIVE),
     dns: () => dns,
     domains: () => domains,
@@ -90,7 +95,7 @@ function harness() {
     },
     now: () => clock,
     pause: (ms) => {
-      clock += ms;
+      clock += ms + 0.0137;
     },
     receipt: (phase, record) => {
       events.push(`receipt-${phase}`);

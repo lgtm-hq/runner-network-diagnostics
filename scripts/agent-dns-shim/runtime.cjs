@@ -12,7 +12,8 @@ const { listenerState } = require("./config.cjs");
 function probe(command, args, timeoutMs = 2000) {
   const result = spawnSync(command, args, {
     encoding: "utf8",
-    timeout: Math.max(1, Math.min(timeoutMs, 10000)),
+    // spawnSync requires integer milliseconds; zero disables its timeout.
+    timeout: Math.min(10000, Math.max(1, Math.floor(timeoutMs) || 1)),
     maxBuffer: LIMIT,
     env: { ...process.env, LC_ALL: "C", SYSTEMD_COLORS: "0", SYSTEMD_PAGER: "cat" },
   });

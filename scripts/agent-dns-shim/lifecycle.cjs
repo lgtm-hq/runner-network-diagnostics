@@ -9,7 +9,7 @@ function waitInitialized(r) {
   let attempts = 0;
   let last;
   while (r.now() - start < 30000) {
-    last = r.status(Math.min(2000, 30000 - (r.now() - start)));
+    last = r.status(Math.max(1, Math.floor(Math.min(2000, 30000 - (r.now() - start)))));
     attempts += 1;
     const status = agentStatus(last);
     if (r.now() - start <= 30000 && status === "initialized")

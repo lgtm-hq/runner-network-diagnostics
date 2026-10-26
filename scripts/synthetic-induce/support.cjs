@@ -10,7 +10,8 @@ const overrideConfig = "/etc/systemd/resolved.conf.d/99-ci1203-counterfactual.co
 function probe(command, args, options = {}) {
   const result = spawnSync(command, args, {
     encoding: "utf8",
-    timeout: options.timeoutMs ?? 20000,
+    // Bound integer milliseconds; zero would disable the timeout.
+    timeout: Math.min(20000, Math.max(1, Math.floor(options.timeoutMs ?? 20000) || 1)),
     maxBuffer: 1024 * 1024,
   });
   return {

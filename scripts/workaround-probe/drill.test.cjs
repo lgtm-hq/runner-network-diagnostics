@@ -1,6 +1,7 @@
 "use strict";
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
+const { probe: realProbe } = require("../agent-dns-shim/runtime.cjs");
 const { runDrill } = require("./drill.cjs");
 const control = require("../agent-dns-shim/control.cjs");
 const { DIRECTORIES } = require("../agent-dns-shim/config-files.cjs");
@@ -10,7 +11,7 @@ function fixture() {
   let present = false;
   let value = "";
   let servicePid = 100;
-  let clock = 0;
+  let clock = 0.5772156649;
   const receipts = [];
   const content = "[Resolve]\n# ordinary default\n";
   const owned = { present: true, ino: "1", dev: "1", ctimeNs: "1", sha256: "owned" };
@@ -24,12 +25,16 @@ function fixture() {
       stderr: "",
       error: null,
     }),
-    status: () => ({
-      status: 1,
-      stdout: "",
-      stderr: "cat: No such file or directory",
-      error: null,
-    }),
+    status: (budget) => {
+      if (budget !== undefined)
+        assert.ok(Number.isSafeInteger(budget) && budget >= 1 && budget <= 2000);
+      return {
+        status: 1,
+        stdout: "",
+        stderr: "cat: No such file or directory",
+        error: null,
+      };
+    },
     config: () => ({
       status: 0,
       stdout: `# /etc/systemd/resolved.conf\n${content}`,
@@ -65,7 +70,7 @@ function fixture() {
     },
     now: () => clock,
     pause: (ms) => {
-      clock += ms;
+      clock += ms + 0.0091;
     },
     bootMicros: () => 1,
     receipt: (phase, record) => receipts.push({ phase, ...record }),
@@ -163,4 +168,28 @@ test("an installer failure result stops induction and recovers owned intent", ()
   assert.equal(record.error, "portable installer reported failure");
   assert.equal(record.inducedService, undefined);
   assert.equal(f.r.pathPresent(), false);
+});
+
+test("fractional deadline drill reaches main rollback without wrapper recovery using real spawn", () => {
+  const f = fixture();
+  let clock = 0.5772156649;
+  f.r.now = () => clock;
+  f.r.pause = (ms) => {
+    clock += ms + 0.0091;
+  };
+  f.r.status = (remainingMs = 2000) => {
+    clock += 3.217;
+    return realProbe(
+      process.execPath,
+      ["-e", "process.stderr.write('cat: No such file or directory\\n');process.exit(1)"],
+      Math.min(2000, remainingMs),
+    );
+  };
+  const record = runDrill(f);
+  assert.equal(record.mainReceipt?.disposition, "ROLLED_BACK_UNINITIALIZED");
+  assert.equal(record.mainReceipt?.readiness.outcome, "DEADLINE_EXPIRED");
+  assert.equal(record.mainReceipt?.failed, true);
+  assert.equal(record.mainReceipt?.policyClearance, false);
+  assert.equal(record.disposition, "DRILL_PASS");
+  assert.equal(record.recovery, undefined);
 });

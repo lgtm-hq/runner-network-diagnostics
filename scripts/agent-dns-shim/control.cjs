@@ -103,7 +103,13 @@ function install(r, state) {
 }
 function main(r, state) {
   if (!state.environment.allowed) return { disposition: "NOT_APPLICABLE", reason: state.reason };
-  const readiness = waitInitialized(r);
+  let readiness;
+  try {
+    readiness = waitInitialized(r);
+  } catch (error) {
+    // A faulted wait must still reach owned-file safety recovery.
+    readiness = { ready: false, outcome: "WAIT_ERROR", error: error.message };
+  }
   if (!state.mutationIntent) {
     // Control and unaffected paths never acquire ownership. Collect readiness
     // for the canary without treating an observed control bypass as a failure.
