@@ -96,6 +96,13 @@ different setups are `NOT_APPLICABLE`. It atomically adds only an owned later
 firewall, experiment service, resolver symlink or original config is changed.
 Successful checkout alone never demonstrates a healthy DNS path.
 
+**Known limitation discovered in synthetic run 40313241012:** the frozen native
+cleanup incorrectly assumes hardener post restores the main resolver file. That
+code was never exercised in the native run (zero applicable hosts). Do not repeat
+the native treatment workflow until its cleanup is separately corrected and
+reviewed. The following describes that historical implementation, not validated
+restoration behavior.
+
 An action without pre registers a guard post during main, above the hardener's
 pre-registered post in the runner's LIFO stack. It removes the override without
 restarting resolved, preserving the live agent path until hardener cleanup.
@@ -161,13 +168,39 @@ invalid, or I1 fails to reproduce the captured bypass in every replicate, do
 not interpret treatment arms as fixing the captured incident. SERVFAIL without
 the captured return path is partial fidelity only.
 
-The synthetic platform file stays in place until after guard, hardener cleanup
-and the unchanged treatment fallback. Its own final post removes the owned
-platform file, verifies absence, restarts resolved once and checks original main
-config/global DNS, Azure per-link DNS and successful application resolution.
+The single authorized synthetic run (40313241012) is complete and inconclusive:
+one baseline oracle and two induced-only oracles raced agent initialization,
+all cleanup checks assumed an unimplemented vendor revert, and induced-only
+artifact uploads failed. Observed path recovery is descriptive evidence only.
+No new dispatch or production remedy is authorized by those observations.
+
+The revised experiment has not been dispatched. Any repeat requires independent
+verification of the exact signed helper/workflow pins and a new execution allowance.
+It waits on a monotonic 20-second deadline for agent readiness before measuring,
+with separately bounded probes and an independent readiness receipt; terminal
+status errors fail immediately. Missing readiness never becomes an oracle.
+The synthetic platform file stays in place until after guard, hardener
+post and the synthetic-only treatment fallback. That fallback reloads resolved
+after override removal; it verifies the main file observed at oracle-A remains
+unchanged,
+the platform file is unchanged and Global DNS is empty while the reset remains.
+The final post removes the owned platform file, verifies absence, restarts
+resolved once and checks the main hash observed at oracle-A, Global localhost DNS,
+Azure per-link DNS and successful application resolution. It never restores or
+edits the vendor main file, or stops the agent. Each condition and available
+observation is reported separately; an unknown main-file baseline fails closed.
 Ownership failures, lost acknowledgements and cleanup errors remain failures.
-Each synthetic receipt is labelled and checksummed. Posts occur after evidence
-upload; retain terminal console logs as well as artifacts.
+Each synthetic receipt is labelled and checksummed. Before upload, the revised
+helper prints bounded base64 chunks of every upload file, including manifests,
+with its size and SHA-256. The fixed file set has limits of 64 files, 256 KiB
+per file and 1 MiB per job. Symlinks, unmanifested files, token-like contents and
+limits fail the copy without printing the refused contents. A closing inventory
+commits every file header. A future preregistration may accept complete independently
+reconstructed console evidence when the induced fault blocks artifact uploads;
+this does not change the old run's artifact requirement. Rebuild console
+evidence for all jobs and require byte-for-byte agreement wherever artifacts
+exist. Do not pool a future run with historical observations. Posts occur after
+evidence upload; retain terminal console logs as well as artifacts.
 
 Even a full synthetic pass establishes only sufficiency on the ordinary stub
 topology. It does not validate GitHub's `.100` forwarder/proxy, mid-job platform
@@ -177,5 +210,5 @@ Existing PR holds and all-checks merge policy remain unchanged.
 Additional local regression suite:
 
 ```sh
-node --test --experimental-test-coverage scripts/synthetic-induce/control.test.cjs
+node --test --experimental-test-coverage scripts/synthetic-induce/*.test.cjs scripts/synthetic-finish/*.test.cjs
 ```
