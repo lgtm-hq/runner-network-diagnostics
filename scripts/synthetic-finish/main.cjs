@@ -3,6 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { createHash } = require("node:crypto");
 const { topology } = require("../synthetic-induce/support.cjs");
+const { copyEvidence } = require("./evidence.cjs");
 try {
   topology("finish");
 } catch (error) {
@@ -32,4 +33,13 @@ for (const name of ["ci1203-synthetic-induce", "ci1203-synthetic-treatment"]) {
     .join("");
   fs.writeFileSync(path.join(directory, "SHA256SUMS"), manifest);
   console.log(`ci1203-synthetic-MANIFEST ${name}\n${manifest}`);
+}
+// Print every committed pre/main body even when the induced fault prevents
+// artifact upload. Chunks are bounded and byte-exact; the original run's gates
+// are never retroactively changed by this future preservation format.
+try {
+  copyEvidence({ root: process.env.RUNNER_TEMP });
+} catch (error) {
+  console.error(`ci1203-synthetic-PRESERVATION_FAILED: ${error.message}`);
+  process.exitCode = 1;
 }

@@ -6,7 +6,7 @@ const os = require("node:os");
 const path = require("node:path");
 const { ordinaryConfig, inducibility, prepare, restore } = require("./control.cjs");
 const treatment = require("../synthetic-treatment/control.cjs");
-const { cleanup } = require("../resolver-counterfactual/control.cjs");
+const { treatmentCleanup: cleanup } = require("./lifecycle.cjs");
 const { operate, bytes } = require("../resolver-counterfactual/root-file.cjs");
 const { mainConfig } = require("./support.cjs");
 const token = "a".repeat(64);
@@ -41,6 +41,7 @@ function mock() {
   const events = [];
   let state;
   let hardened = false;
+  let pid = 100;
   const io = {
     save(value) {
       state = structuredClone(value);
@@ -52,7 +53,9 @@ function mock() {
       hardened && (present.override || !present.reset)
         ? dns.replace("Global:", "Global: 127.0.0.1")
         : dns,
+    pid: () => String(pid),
     restart() {
+      pid += 1;
       events.push("restart");
     },
     root(mode, value, profile = "override") {
@@ -79,7 +82,7 @@ function mock() {
     },
     hardenerPost: () => {
       events.push("hardener-post");
-      hardened = false;
+      // The actual hardener post signals done; it does not revert DNS.
     },
   };
 }
@@ -87,6 +90,9 @@ function induce(m, arm = "I1") {
   return prepare({ ...baseline, arm, io: m.io });
 }
 function restoreState(m, state) {
+  // Simulate the ready agent and its measured main file before the post hook.
+  m.harden();
+  state.observedMainAtOracleA = { sha256: "hardened" };
   return restore({
     state,
     io: m.io,
@@ -178,14 +184,36 @@ test("lost induction acknowledgement leaves enough durable state for cleanup", (
   };
   assert.throws(() => induce(m));
   assert.equal(m.present.reset, true);
-  assert.equal(restoreState(m, m.load()).disposition, "SYNTHETIC_RESTORATION_VERIFIED");
+  assert.equal(restoreState(m, m.load()).disposition, "SYNTHETIC_FILES_REMOVED");
   assert.equal(m.present.reset, false);
 });
 test("invalid arm fails before mutation", () => assert.throws(() => induce(mock(), "invalid")));
 test("synthetic restoration removes reset and verifies original state", () => {
   const m = mock();
   const s = induce(m);
-  assert.equal(restoreState(m, s).disposition, "SYNTHETIC_RESTORATION_VERIFIED");
+  assert.equal(restoreState(m, s).disposition, "SYNTHETIC_FILES_REMOVED");
+  assert.equal(m.present.reset, false);
+  assert.equal(m.events.filter((e) => e === "restart").length, 1);
+});
+
+test("missing oracle baseline fails without leaving the owned synthetic reset behind", () => {
+  const m = mock();
+  const state = induce(m);
+  m.harden();
+  assert.throws(
+    () =>
+      restore({
+        state,
+        io: m.io,
+        overrideExists: () => false,
+        resolve: () => ({ status: 0, stdout: "address" }),
+      }),
+    (error) => {
+      assert.ok(error.details.failures.includes("oracleAMainBaselineKnown"));
+      assert.equal(error.details.checks.platformAbsent, true);
+      return true;
+    },
+  );
   assert.equal(m.present.reset, false);
   assert.equal(m.events.filter((e) => e === "restart").length, 1);
 });
@@ -198,7 +226,7 @@ test("lost unlink acknowledgement restores but remains failed", () => {
     if (args[0] === "remove") throw new Error("lost unlink ack");
     return result;
   };
-  assert.throws(() => restoreState(m, s), /restored after cleanup errors/);
+  assert.throws(() => restoreState(m, s), /synthetic cleanup failed: lost unlink ack/);
   assert.equal(m.present.reset, false);
   assert.equal(m.events.filter((e) => e === "restart").length, 1);
 });
@@ -240,12 +268,13 @@ test("no mutation, DNS drift, failed resolution and original hash drift are not 
     }),
   );
 });
-test("I2 exercises unchanged cleanup lifecycle with synthetic platform kept until fallback", () => {
+test("I2 cleans owned files while the real hardener post retains its main file", () => {
   const m = mock();
   const induction = induce(m, "I2");
   const s = treatment.prepare({ induction, io: m.io });
   assert.equal(m.present.override, true);
   m.harden();
+  s.observedMainAtOracleA = { sha256: "hardened" };
   assert.match(m.io.dns(), /Global: 127.0.0.1/);
   assert.equal(
     cleanup({ phase: "guard", state: s, io: m.io }).disposition,
@@ -253,11 +282,11 @@ test("I2 exercises unchanged cleanup lifecycle with synthetic platform kept unti
   );
   m.hardenerPost();
   assert.equal(
-    cleanup({ phase: "fallback", state: m.load(), io: m.io }).disposition,
-    "RESTORATION_VERIFIED",
+    cleanup({ phase: "fallback", state: s, io: m.io }).disposition,
+    "SYNTHETIC_OVERRIDE_REMOVED",
   );
   assert.equal(m.present.reset, true);
-  assert.equal(restoreState(m, induction).disposition, "SYNTHETIC_RESTORATION_VERIFIED");
+  assert.equal(restoreState(m, induction).disposition, "SYNTHETIC_FILES_REMOVED");
 });
 test("I3 prepares without override, then permits a separately measured late install", () => {
   const m = mock();
@@ -413,6 +442,7 @@ test("oracle records resolver windows and failed resolutions without claiming pa
   process.env.PATH = `${bin}:${old.path}`;
   const r = support.runtime("ci1203-synthetic-oracle-test");
   r.io.save({ arm: "I1" });
+  r.observeMain = () => ({ sha256: "hardened", content: "[Resolve]\nDNS=127.0.0.1\nDomains=~.\n" });
   r.io.dns = () => dns;
   support.measure("A", r);
   const oracle = JSON.parse(fs.readFileSync(path.join(r.out, "oracle-A.json"), "utf8"));

@@ -14,6 +14,13 @@ const {
   platformConfig,
   overrideConfig,
 } = require("./support.cjs");
+const {
+  waitForAgent,
+  removeOwned,
+  observeCleanup,
+  verifyCleanup,
+  restartObserved,
+} = require("./lifecycle.cjs");
 function ordinaryConfig(observation) {
   if (
     !observation ||
@@ -95,43 +102,31 @@ function prepare({
   io.save(state);
   return state;
 }
-function restore({ state, io, overrideExists, resolve }) {
+function restore({ state, io, overrideExists, resolve, platformExists = () => false }) {
   if (!state?.inScope) return { disposition: "SYNTHETIC_NO_MUTATION" };
-  const errors = [];
+  let errors = [];
+  let restart;
   if (state.mutationIntent) {
-    function remove() {
-      try {
-        io.root("remove", state.token, "reset");
-      } catch (e) {
-        errors.push(e.message);
-        console.error(`ci1203-synthetic-REMOVE_ERROR: ${e.message}`);
-      }
-    }
-    remove();
-    let observation = io.root("inspect", state.token, "reset");
-    if (typeof observation.present !== "boolean") throw new Error("synthetic absence unverified");
-    if (observation.present) {
-      remove();
-      observation = io.root("inspect", state.token, "reset");
-    }
-    if (observation.present !== false) throw new Error("synthetic reset remains");
+    errors = removeOwned({ io, state, profile: "reset" });
     if (overrideExists())
       throw new Error("override still present after treatment fallback; refusing restart");
-    io.restart();
+    restart = restartObserved(io);
   }
-  if (
-    overrideExists() ||
-    io.hash(mainConfig) !== state.originalMain ||
-    globalDns(io.dns()) !== state.originalDns ||
-    !/^Link .*:.*\b168\.63\.129\.16\b/m.test(io.dns())
-  )
-    throw new Error("synthetic original state not restored");
+  const result = observeCleanup({
+    io,
+    state,
+    expectedDns: "127.0.0.1",
+    overrideAbsent: !overrideExists(),
+  });
+  result.observations.restart = restart || { requested: false };
+  result.checks.restartVerified = !state.mutationIntent || restart?.verified === true;
+  result.checks.platformAbsent = !platformExists();
   const resolution = resolve();
-  if (resolution.status !== 0 || !resolution.stdout.trim())
-    throw new Error("post-cleanup resolution failed");
-  if (errors.length)
-    throw new Error(`synthetic restored after cleanup errors: ${errors.join("; ")}`);
-  return { disposition: "SYNTHETIC_RESTORATION_VERIFIED", arm: state.arm, resolution };
+  result.observations.resolution = resolution;
+  result.checks.resolutionWorks =
+    resolution.status === 0 && !resolution.error && Boolean(resolution.stdout.trim());
+  verifyCleanup(result, errors);
+  return { disposition: "SYNTHETIC_FILES_REMOVED", arm: state.arm, ...result };
 }
 function entry(
   phase,
@@ -186,8 +181,12 @@ function entry(
       const state = r.load();
       if (!state) throw new Error("synthetic pre did not save state");
       fs.appendFileSync(process.env.GITHUB_OUTPUT, `in_scope=${state.inScope}\n`);
-      if (state.inScope) measure("A", r);
-      else r.receipt("oracle-A", { disposition: state.disposition });
+      if (state.inScope) {
+        const readiness = (r.waitForAgent || waitForAgent)();
+        r.receipt("agent-readiness", readiness);
+        if (!readiness.ready) throw new Error("agent initialization wait expired");
+        measure("A", r);
+      } else r.receipt("oracle-A", { disposition: state.disposition });
     } else if (phase === "post") {
       r.receipt(
         "post",
@@ -195,12 +194,19 @@ function entry(
           state: r.load(),
           io: r.io,
           overrideExists: () => exists(overrideConfig),
+          platformExists: () => exists(platformConfig),
           resolve: () =>
             require("./support.cjs").probe("timeout", ["10", "getent", "ahostsv4", "github.com"]),
         }),
       );
     } else throw new Error("invalid synthetic phase");
   } catch (error) {
+    if (phase === "post")
+      r.receipt(`${phase}-observation`, {
+        disposition: "SYNTHETIC_CLEANUP_FAILED",
+        error: error.message,
+        ...error.details,
+      });
     console.error(`ci1203-synthetic-FAILURE phase=${phase}: ${error.message}`);
     process.exitCode = 1;
   }

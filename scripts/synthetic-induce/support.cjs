@@ -7,10 +7,10 @@ const { runtime: originalRuntime } = require("../resolver-counterfactual/control
 const mainConfig = "/etc/systemd/resolved.conf";
 const platformConfig = "/etc/systemd/resolved.conf.d/90-egress-proxy.conf";
 const overrideConfig = "/etc/systemd/resolved.conf.d/99-ci1203-counterfactual.conf";
-function probe(command, args) {
+function probe(command, args, options = {}) {
   const result = spawnSync(command, args, {
     encoding: "utf8",
-    timeout: 20000,
+    timeout: options.timeoutMs ?? 20000,
     maxBuffer: 1024 * 1024,
   });
   return {
@@ -42,6 +42,8 @@ function runtime(name) {
   const stateFile = path.join(out, "state.json");
   const io = {
     ...original.io,
+    pid: () =>
+      checked("systemctl", ["show", "systemd-resolved", "--value", "-p", "ExecMainPID"]).trim(),
     save(state) {
       const temp = `${stateFile}.tmp`;
       fs.writeFileSync(temp, `${JSON.stringify(state, null, 2)}\n`, { mode: 0o600 });
@@ -115,6 +117,18 @@ function measure(label, r) {
     "-p",
     "ExecMainPID",
   ]).trim();
+  const state = r.load();
+  const observedMain = (r.observeMain || observeMain)();
+  if (label === "A") {
+    state.observedMainAtOracleA = observedMain;
+    state.resolverAtOracleA = {
+      dns,
+      domains,
+      pid,
+      azureLinkPresent: /^Link .*:.*\b168\.63\.129\.16\b/m.test(dns),
+    };
+    r.io.save(state);
+  }
   const oracleStart = new Date().toISOString();
   const allowed = probe("timeout", ["10", "getent", "ahostsv4", "api.github.com"]);
   const denied = probe("timeout", ["10", "getent", "ahostsv4", "example.com"]);
@@ -130,9 +144,19 @@ function measure(label, r) {
     domains,
     pid,
     status,
+    observedMain,
+    mainMatchesOracleA: observedMain.sha256 === state.observedMainAtOracleA?.sha256,
+    mainDiffersFromBefore: observedMain.sha256 !== state.originalMain,
+    mainContainsLocalDns: /^DNS=127\.0\.0\.1$/m.test(observedMain.content),
+    mainContainsRouteDomain: /^Domains=~\.$/m.test(observedMain.content),
     allowed,
     denied,
   });
+}
+function observeMain() {
+  const content = fs.readFileSync(mainConfig, "utf8");
+  if (Buffer.byteLength(content) > 65536) throw new Error("main config observation too large");
+  return { content, sha256: createHash("sha256").update(content).digest("hex") };
 }
 module.exports = {
   runtime,
@@ -141,6 +165,7 @@ module.exports = {
   exists,
   topology,
   observeConfig,
+  observeMain,
   measure,
   mainConfig,
   platformConfig,

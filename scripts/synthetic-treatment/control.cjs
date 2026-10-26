@@ -1,7 +1,8 @@
 "use strict";
 const fs = require("node:fs");
 const path = require("node:path");
-const { globalDns, cleanup } = require("../resolver-counterfactual/control.cjs");
+const { globalDns } = require("../resolver-counterfactual/control.cjs");
+const { treatmentCleanup } = require("../synthetic-induce/lifecycle.cjs");
 const { runtime, measure, mainConfig, platformConfig } = require("../synthetic-induce/support.cjs");
 function prepare({ induction, io }) {
   const state = { synthetic: true, arm: induction?.arm, disposition: "SYNTHETIC_NO_MUTATION" };
@@ -15,6 +16,7 @@ function prepare({ induction, io }) {
   if (state.originalDns !== "") throw new Error("synthetic pre global DNS not empty");
   state.originalMain = io.hash(mainConfig);
   state.originalPlatform = io.hash(platformConfig);
+  state.platformToken = induction.token;
   state.token = io.token();
   state.disposition = "SYNTHETIC_PREPARED";
   io.save(state);
@@ -41,6 +43,11 @@ function entry(phase, setup = () => runtime("ci1203-synthetic-treatment")) {
         r.receipt(phase, { disposition: state.disposition });
         return;
       }
+      const induction = runtime("ci1203-synthetic-induce").load();
+      if (typeof induction?.observedMainAtOracleA?.sha256 !== "string")
+        throw new Error("oracle-A main baseline unavailable");
+      state.observedMainAtOracleA = induction.observedMainAtOracleA;
+      r.io.save(state);
       if (state.arm === "I3") {
         const oracle = JSON.parse(
           fs.readFileSync(
@@ -61,8 +68,14 @@ function entry(phase, setup = () => runtime("ci1203-synthetic-treatment")) {
       if (state.arm === "I3") measure("B", r);
     } else if (phase === "register-guard")
       r.receipt(phase, { disposition: "SYNTHETIC_GUARD_REGISTERED" });
-    else r.receipt(phase, cleanup({ phase, state: r.load(), io: r.io }));
+    else r.receipt(phase, treatmentCleanup({ phase, state: r.load(), io: r.io }));
   } catch (error) {
+    if (["guard", "fallback"].includes(phase))
+      r.receipt(`${phase}-observation`, {
+        disposition: "SYNTHETIC_CLEANUP_FAILED",
+        error: error.message,
+        ...error.details,
+      });
     console.error(`ci1203-synthetic-FAILURE phase=${phase}: ${error.message}`);
     process.exitCode = 1;
   }
