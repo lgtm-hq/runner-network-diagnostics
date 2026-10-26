@@ -15,7 +15,7 @@ permissions:
 concurrency:
   group: runner-dns-1203-workaround
   cancel-in-progress: false
-# Helpers are pinned to the signed source commit reviewed before publication.
+# Helpers are pinned to the signed correction reviewed before publication.
 # No reruns. Enable drills only while fewer than two have executed.
 jobs:
   probe:
@@ -39,7 +39,7 @@ jobs:
         id: screen
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: screen
           arm: ${{ matrix.arm }}
@@ -49,7 +49,7 @@ jobs:
         id: shim
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/agent-dns-shim@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/agent-dns-shim@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: ${{ matrix.arm == 'T' && 'apply' || 'observe' }}
           hosted: ${{ runner.environment }}
@@ -70,7 +70,7 @@ jobs:
         if: always() && steps.screen.outputs.eligible == 'true'
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: A
           hosted: ${{ runner.environment }}
@@ -78,7 +78,7 @@ jobs:
         if: always() && steps.screen.outputs.eligible != 'true'
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: U
           hosted: ${{ runner.environment }}
@@ -95,14 +95,14 @@ jobs:
         if: always() && steps.screen.outputs.eligible == 'true'
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: api
       - name: Prepare native payload
         if: always() && steps.screen.outputs.eligible == 'true'
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: payload
       - name: Upload payload
@@ -125,14 +125,14 @@ jobs:
         if: always() && steps.screen.outputs.eligible == 'true'
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: roundtrip
       - name: Unchanged strict negative control
         if: always() && steps.screen.outputs.eligible == 'true'
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: negative
           hosted: ${{ runner.environment }}
@@ -140,7 +140,7 @@ jobs:
         if: always() && steps.screen.outputs.eligible == 'true'
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: Z
           hosted: ${{ runner.environment }}
@@ -148,7 +148,7 @@ jobs:
         if: always()
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: finish
           hosted: ${{ runner.environment }}
@@ -189,7 +189,7 @@ jobs:
         if: always()
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: drill
           hosted: ${{ runner.environment }}
@@ -197,7 +197,7 @@ jobs:
         if: always()
         # Full immutable action SHA cannot be wrapped.
         # yamllint disable-line rule:line-length
-        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@350e923b380caefc6cff0d37a67e742dba7c06ec
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
         with:
           mode: finish
           hosted: ${{ runner.environment }}

@@ -1,4 +1,4 @@
-# Native DNS workaround canary
+# Native DNS workaround canary, registration 2
 
 This is the prospective execution protocol. The frozen registration identifies the signed workflow and
 helper commits before the first dispatch. Run outcomes are recorded separately.
@@ -6,6 +6,19 @@ helper commits before the first dispatch. Run outcomes are recorded separately.
 This tests one intervention on disposable GitHub-hosted Ubuntu 24.04 runners: an owned late DNS configuration
 file installed before harden-runner's pre hook. It tests neither a repair after hardening nor a change to the
 hardener, firewall policy or endpoint allowlist.
+
+## Correction from the first native run
+
+[Run 40405104019](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40405104019)
+failed both rollback drills and stopped under registration 1. A fractional child-process timeout
+threw before main could invoke rollback. The drill wrapper recovered both hosts. No affected
+runner received the treatment, so that run establishes neither efficacy nor ineffectiveness.
+
+This registration starts a separate experiment with new observations and a fresh budget. The
+correction rounds and bounds timeouts in the shim and shared oracle probe, and ensures an
+unexpected readiness exception still reaches owned-file safety recovery. The previous run's
+26 jobs, control observation, no-op counts and wrapper recoveries count only as history.
+All efficacy gates, minimums and adoption requirements below remain in force.
 
 ## Workaround lifecycle
 
@@ -145,7 +158,9 @@ identical-head dispatch within the same budget. Between dispatches, the `include
 collected drill dispositions, independently of treatment outcomes; overall safety stops still apply. A refused
 drill job is red, so placement exclusions are classified by `DRILL_NOT_EXECUTED`, not the job conclusion.
 Every executed drill is retained and must pass, including
-surplus executions in the final drill-bearing batch. A rollback failure stops the experiment.
+surplus executions in the final drill-bearing batch. A passing drill requires the main receipt itself
+to report `ROLLED_BACK_UNINITIALIZED`, a failing main with no policy clearance, and no wrapper recovery.
+The first dispatch enables drills. A rollback failure stops the experiment.
 
 ## Evidence and invalid observations
 
@@ -162,6 +177,11 @@ Only these instrument failures can invalidate an observation:
 - Missing pre-treatment nonce query or the dispatch sinkhole reference.
 - No initialized treatment agent within 30 seconds, provided the matching safety receipts pass.
 - No initialized affected control agent within 30 seconds.
+
+A readiness `WAIT_ERROR` on any job is an instrument self-check failure: stop, fail, no rollout.
+An exception during oracle readiness (A or U) has the same disposition even if no readiness receipt
+could be written. It is never the no-initialization invalid-observation case: a faulted wait does not
+prove that its deadline elapsed. Owned-file safety recovery remains mandatory and is assessed separately.
 
 Any other missed treatment gate is a failure. Failed rollback is always a failure. More than one invalid
 treatment observation, or more than two invalid eligible observations overall, makes the experiment
@@ -209,7 +229,7 @@ establish that the DNS intervention itself failed. Instrument correction require
 drills are recorded separately from executed drill failures.
 
 A source change ends this experiment and requires a separate registration. Earlier runs 40294837589,
-40304555915, 40313241012 and 40324625326 supply context only. Their observations cannot replace or supplement
+40304555915, 40313241012, 40324625326 and 40405104019 supply context only. Their observations cannot replace or supplement
 this experiment's observations.
 
 ## Conditional adoption

@@ -67,12 +67,13 @@ drop-in or `127.0.0.100`.
 Each run is reported on its own. Results are never pooled across runs, and a reviewed source change
 is not a result.
 
-| Run                                                                                           | Date       | Purpose                           | Jobs | Outcome                                                                                  |
-| --------------------------------------------------------------------------------------------- | ---------- | --------------------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| [40294837589](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40294837589) | 2026-10-26 | Passive capture                   | 24   | 5 affected `westus2` captures, 1 healthy control, 18 screened out                        |
-| [40304555915](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40304555915) | 2026-10-26 | Native counterfactual             | 24   | Inconclusive: no affected runner was placed, no override installed                       |
-| [40313241012](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40313241012) | 2026-10-26 | Controlled reproduction           | 16   | Inconclusive: baseline 3 of 4 valid, induced arm invalid, cleanup checks failed 16 of 16 |
-| [40324625326](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40324625326) | 2026-10-26 | Corrected controlled reproduction | 16   | Inconclusive: baseline 4/4, induced 3/4; one real-host exclusion                         |
+| Run                                                                                           | Date       | Purpose                           | Jobs | Outcome                                                                                         |
+| --------------------------------------------------------------------------------------------- | ---------- | --------------------------------- | ---- | ----------------------------------------------------------------------------------------------- |
+| [40294837589](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40294837589) | 2026-10-26 | Passive capture                   | 24   | 5 affected `westus2` captures, 1 healthy control, 18 screened out                               |
+| [40304555915](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40304555915) | 2026-10-26 | Native counterfactual             | 24   | Inconclusive: no affected runner was placed, no override installed                              |
+| [40313241012](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40313241012) | 2026-10-26 | Controlled reproduction           | 16   | Inconclusive: baseline 3 of 4 valid, induced arm invalid, cleanup checks failed 16 of 16        |
+| [40324625326](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40324625326) | 2026-10-26 | Corrected controlled reproduction | 16   | Inconclusive: baseline 4/4, induced 3/4; one real-host exclusion                                |
+| [40405104019](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40405104019) | 2026-10-26 | Native workaround canary          | 26   | Failed: both rollback drills hit a timeout bug in this repository; no affected treatment runner |
 
 Screened-out jobs did not run the diagnostic checks. Their green status says nothing about runner
 health. The cleanup failures in run 40313241012 came from a wrong assumption in this repository's
