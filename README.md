@@ -75,7 +75,7 @@ sha256sum -c vendor/SHA256SUMS
 All checks on a PR must pass under the owner's merge policy, including checks
 GitHub does not designate required. This experiment changes no production repos.
 
-## Counterfactual candidate (local draft)
+## Native counterfactual
 
 The first run is complete: five affected westus2 captures, one full ordinary
 control, and eighteen screening-only jobs. Both independent causality reviews
@@ -83,10 +83,11 @@ confirm an existing `90-egress-proxy.conf` empty `DNS=` reset overrides the
 hardener's main-file global DNS setting. This establishes an interaction, not
 exclusive vendor responsibility or a validated fix.
 
-`dns-counterfactual.yml` is a separate, unpublished candidate. The original
-workflow and vendored probe remain unchanged. Its new helper pins identify
-signed local source awaiting independent Sol verification.
-The original dispatch allowance is spent; no second execution is authorized.
+`dns-counterfactual.yml` was independently reviewed and dispatched once on
+2026-10-26 (run 40304555915). All 24 jobs succeeded, but none had the affected
+topology and no override was installed. The result is inconclusive for the fix.
+The original workflow and vendored probe remain unchanged. Neither historical
+batch is permission for an automatic repeat.
 
 Odd samples are treatment, even samples unchanged controls. Before hardener pre,
 treatment requires the exact captured topology and empty DNS reset; unknown or
@@ -112,7 +113,8 @@ files; collect terminal logs, not just the pre-post diagnostic artifact.
 This ordering follows `actions/runner` v2.338.0 `ActionRunner.RunAsync`
 (post registered before pre/main handler execution), and
 `ExecutionContext.RegisterPostJobStep` (first registration wins; LIFO stack).
-Local lifecycle tests simulate these paths; hosted ordering remains unproven.
+Local lifecycle tests simulate these paths; hosted mutation ordering remains
+unproven because the native counterfactual found no applicable runner.
 
 A future treatment pass needs fresh agent-path wire evidence, successful
 checkout/API/artifact roundtrip, the unchanged strict denied-destination control,
@@ -124,4 +126,56 @@ Additional local tests:
 
 ```sh
 node --test --experimental-test-coverage scripts/resolver-counterfactual/control.test.cjs
+```
+
+## Controlled synthetic reproduction
+
+The owner authorized a separately reviewed controlled reproduction in this public
+HQ repository. `dns-synthetic.yml` is a new manual-only experiment: four arms with
+four replicates each, maximum parallelism four, configured eight-minute job
+timeout, no retries. No production rollout or vendor posts are authorized.
+
+C0 is unchanged. I1 creates an owned empty `DNS=` reset at the captured platform
+path before hardener pre. I2 adds the same reset plus the late-sorting
+`DNS=127.0.0.1` override before hardener pre. I3 measures the induced state first,
+then adds the override and restarts resolved once for a same-host comparison.
+Every arm uses the original failing hardener pin, block policy and allowlist.
+The original native `applicable()` and workflow are unchanged; a separate
+synthetic predicate requires a positively observed ordinary hosted stub topology.
+It uses a separate bounded, unfiltered `systemd-analyze cat-config` read, records
+its bytes/hash/status/errors, and refuses failed reads, unexpected source files
+or any active setting. The diagnostic excerpt is never mutation authorization.
+Real experiment hosts and unknown topologies receive no synthetic mutation.
+
+The full pinned hardener source and community agent v0.17.0 were checked read-only
+for special handling of the platform filename and resolved drop-in directory;
+neither string occurs. Runtime agent identity still needs verification: this
+source inspection does not cover arbitrary closed-source engines.
+
+All arms collect wire evidence. Timestamped oracle A resolves `api.github.com`
+and `example.com` through the application resolver after agent initialization;
+I3 records a second oracle B after its repair. Agent-path queries, effective
+global DNS and fresh agent attribution determine fidelity. Checkout success
+alone is insufficient because independent DNS answers can coincide. If C0 is
+invalid, or I1 fails to reproduce the captured bypass in every replicate, do
+not interpret treatment arms as fixing the captured incident. SERVFAIL without
+the captured return path is partial fidelity only.
+
+The synthetic platform file stays in place until after guard, hardener cleanup
+and the unchanged treatment fallback. Its own final post removes the owned
+platform file, verifies absence, restarts resolved once and checks original main
+config/global DNS, Azure per-link DNS and successful application resolution.
+Ownership failures, lost acknowledgements and cleanup errors remain failures.
+Each synthetic receipt is labelled and checksummed. Posts occur after evidence
+upload; retain terminal console logs as well as artifacts.
+
+Even a full synthetic pass establishes only sufficiency on the ordinary stub
+topology. It does not validate GitHub's `.100` forwarder/proxy, mid-job platform
+rewrites, actual westus2 remediation, vendor attribution or rollout suitability.
+Existing PR holds and all-checks merge policy remain unchanged.
+
+Additional local regression suite:
+
+```sh
+node --test --experimental-test-coverage scripts/synthetic-induce/control.test.cjs
 ```
