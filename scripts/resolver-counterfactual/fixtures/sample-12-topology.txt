@@ -1,0 +1,111 @@
+2026-10-26T08:49:36+00:00
+stage=before
+
+RESOLVECTL status
+Global
+         Protocols: -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+  resolv.conf mode: foreign
+
+Link 2 (eth0)
+    Current Scopes: DNS
+         Protocols: +DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+Current DNS Server: 168.63.129.16
+       DNS Servers: 168.63.129.16
+        DNS Domain: jlritpxf4sdutfcgm12ssn1vih.xx.internal.cloudapp.net
+
+Link 3 (docker0)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+
+Link 4 (enP55027s1)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+
+RESOLVECTL dns
+Global:
+Link 2 (eth0): 168.63.129.16
+Link 3 (docker0):
+Link 4 (enP55027s1):
+
+RESOLVECTL domain
+Global:
+Link 2 (eth0): jlritpxf4sdutfcgm12ssn1vih.xx.internal.cloudapp.net
+Link 3 (docker0):
+Link 4 (enP55027s1):
+
+RESOLVECTL default-route
+Global
+         Protocols: -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+  resolv.conf mode: foreign
+Link 2 (eth0): yes
+Link 3 (docker0): no
+Link 4 (enP55027s1): no
+
+RESOLVECTL dnsovertls
+Global: no
+Link 2 (eth0): no
+Link 3 (docker0): no
+Link 4 (enP55027s1): no
+
+RESOLVECTL dnssec
+Global: no
+Link 2 (eth0): no
+Link 3 (docker0): no
+Link 4 (enP55027s1): no
+
+EFFECTIVE RESOLVED CONFIG (DNS fields only)
+# /etc/systemd/resolved.conf
+# /etc/ if the original file is shipped in /usr/), or by creating "drop-ins" in
+# /etc/systemd/resolved.conf.d/90-egress-proxy.conf
+DNS=
+
+NETWORK FILE /run/systemd/network/10-netplan-eth0.link
+
+NETWORK FILE /run/systemd/network/10-netplan-eth0.network
+
+UNIT systemd-resolved
+ExecMainPID=2144
+LoadState=loaded
+ActiveState=active
+FragmentPath=/usr/lib/systemd/system/systemd-resolved.service
+DropInPaths=
+
+UNIT egress-dns-resolver
+ExecMainPID=2126
+LoadState=loaded
+ActiveState=active
+FragmentPath=/etc/systemd/system/egress-dns-resolver.service
+DropInPaths=
+
+UNIT egress-outbound-proxy
+ExecMainPID=2059
+LoadState=loaded
+ActiveState=active
+FragmentPath=/etc/systemd/system/egress-outbound-proxy.service
+DropInPaths=
+
+UNIT hosted-compute-agent
+ExecMainPID=2273
+LoadState=loaded
+ActiveState=active
+FragmentPath=/etc/systemd/system/hosted-compute-agent.service
+DropInPaths=
+
+UNIT agent
+ExecMainPID=0
+LoadState=not-found
+ActiveState=inactive
+FragmentPath=
+DropInPaths=
+
+RESOLVER FILE
+/etc/resolv.conf
+2049:94667 /etc/resolv.conf
+# Written by repoint-resolv-conf, which forwards through the egress proxy while it is healthy.
+# The nameservers below it are the ones this host booted with: a resolver
+# that exits stops holding the port, so lookups fall through to them.
+options edns0 trust-ad
+search jlritpxf4sdutfcgm12ssn1vih.xx.internal.cloudapp.net
+nameserver 127.0.0.100
+nameserver 127.0.0.53
+nameserver 168.63.129.16

@@ -24,9 +24,15 @@ function applicable(selection, topology) {
     return false;
   const section = topology
     .split("EFFECTIVE RESOLVED CONFIG (DNS fields only)\n")[1]
-    ?.split(/\n(?:NETWORK FILE|UNIT) /)[0]
-    .trim();
-  return section === `# ${mainConfig}\n# ${platformConfig}\nDNS=`;
+    ?.split(/\n(?:NETWORK FILE|UNIT) /)[0];
+  if (!section) return false;
+  // cat-config headers are absolute .conf paths. The collector also retains
+  // ordinary comments such as "# /etc/ if ..."; these are not source headers.
+  const fields = section
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && (!line.startsWith("#") || /^# \/.+\.conf$/.test(line)));
+  return fields.join("\n") === `# ${mainConfig}\n# ${platformConfig}\nDNS=`;
 }
 function prepare({ sample, selection, topology, io }) {
   if (!/^(?:[1-9]|1[0-9]|2[0-4])$/.test(sample)) throw new Error("sample must be 1..24");
@@ -50,14 +56,44 @@ function prepare({ sample, selection, topology, io }) {
   io.save(state);
   return state;
 }
+function absent(io, token) {
+  const observation = io.root("inspect", token);
+  if (typeof observation.present !== "boolean") throw new Error("override absence unverified");
+  return !observation.present;
+}
 function cleanup({ phase, state, io }) {
   if (!["guard", "fallback"].includes(phase)) throw new Error("invalid cleanup phase");
   if (!state?.mutationIntent) return { phase, disposition: "NO_MUTATION" };
-  const { removed } = io.root("remove", state.token);
-  if (phase === "guard") return { phase, removed, disposition: "REMOVED_WITHOUT_RESTART" };
-  // Fallback is registered before the hardener pre; it executes after hardener post.
-  // If the later guard never ran, deleting a file alone does not reload live DNS.
-  if (removed) io.restart();
+  if (phase === "guard") {
+    const { removed } = io.root("remove", state.token);
+    if (!absent(io, state.token)) throw new Error("guard left owned override present");
+    state.guardRemovalVerified = true;
+    io.save(state);
+    return { phase, removed, disposition: "REMOVED_WITHOUT_RESTART" };
+  }
+  // Durable mutation intent means reload is required unless the guard positively
+  // verified removal BEFORE hardener post. Determine that before unlinking:
+  // a lost unlink acknowledgement must not erase the need to reload live state.
+  const reloadRequired = !state.guardRemovalVerified;
+  const errors = [];
+  let removed = false;
+  function attemptRemoval() {
+    try {
+      removed = Boolean(io.root("remove", state.token).removed) || removed;
+    } catch (error) {
+      errors.push(error.message);
+      console.error(`COUNTERFACTUAL_REMOVE_ERROR: ${error.message}`);
+    }
+  }
+  attemptRemoval();
+  // Inspect checks ownership if present. Foreign/replaced files abort inspection;
+  // only a positively owned remaining file gets one bounded reconciliation attempt.
+  if (!absent(io, state.token)) {
+    attemptRemoval();
+    if (!absent(io, state.token)) throw new Error("owned override remains after cleanup");
+  }
+  const restarted = reloadRequired || removed || errors.length > 0;
+  if (restarted) io.restart();
   const dns = globalDns(io.dns());
   if (
     dns !== state.originalDns ||
@@ -65,14 +101,11 @@ function cleanup({ phase, state, io }) {
     io.hash(platformConfig) !== state.originalPlatform
   )
     throw new Error("original resolver state not restored");
-  return {
-    phase,
-    removed,
-    restarted: removed,
-    globalDns: dns,
-    disposition: "RESTORATION_VERIFIED",
-  };
+  if (errors.length)
+    throw new Error(`original DNS restored after cleanup error: ${errors.join("; ")}`);
+  return { phase, removed, restarted, globalDns: dns, disposition: "RESTORATION_VERIFIED" };
 }
+
 function command(executable, args) {
   const result = spawnSync(executable, args, {
     encoding: "utf8",

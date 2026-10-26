@@ -56,6 +56,7 @@ function operate({ mode, token, root = directory, uid = 0 }) {
     }
     return { created: true };
   }
+  if (mode === "inspect") return { present: Boolean(owned({ target, token, uid })) };
   if (mode === "remove") {
     const removed = removeOwned({ target, token, uid });
     removeOwned({ target: temporary, token, uid });

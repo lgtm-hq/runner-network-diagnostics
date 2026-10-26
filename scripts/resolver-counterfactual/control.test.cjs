@@ -35,6 +35,7 @@ function mock() {
     token: () => token,
     root(mode) {
       events.push(mode);
+      if (mode === "inspect") return { present };
       if (mode === "create") {
         present = true;
         return { created: true };
@@ -369,4 +370,201 @@ test("real action entry consumes saved preselection and records control and post
     process.exitCode = previous.exit;
     fs.rmSync(root, { recursive: true, force: true });
   }
+});
+
+for (const sample of [8, 9, 11, 12, 19]) {
+  test(`verbatim affected capture ${sample} receives the intended treatment`, () => {
+    const capturedSelection = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "fixtures", `sample-${sample}-selection.txt`), "utf8"),
+    );
+    const capturedTopology = fs.readFileSync(
+      path.join(__dirname, "fixtures", `sample-${sample}-topology.txt`),
+      "utf8",
+    );
+    const m = mock();
+    assert.equal(applicable(capturedSelection, capturedTopology), true);
+    const state = prepare({
+      sample: "1",
+      selection: capturedSelection,
+      topology: capturedTopology,
+      io: m.io,
+    });
+    assert.equal(state.disposition, "OVERRIDE_INSTALLED_NO_RESTART");
+    assert.equal(m.present(), true);
+    assert.equal(
+      applicable(capturedSelection, capturedTopology.replace("DNS=\n", "DNS=8.8.8.8\n")),
+      false,
+    );
+    assert.equal(
+      applicable(
+        capturedSelection,
+        capturedTopology.replace("DNS=\n", "DNS=\n# /etc/systemd/resolved.conf.d/95-other.conf\n"),
+      ),
+      false,
+    );
+    assert.equal(
+      applicable(capturedSelection, capturedTopology.replace("DNS=\n", "DNS=\nDomains=~.\n")),
+      false,
+    );
+  });
+}
+test("lost fallback remove acknowledgement reloads live DNS and retains failure", () => {
+  withRoot(({ op, target }) => {
+    const m = mock();
+    const bridge = m.io.root;
+    m.io.root = (mode, value) => {
+      const real = op(mode, value);
+      bridge(mode, value);
+      if (mode === "remove") throw new Error("lost remove acknowledgement");
+      return real;
+    };
+    const state = install(m);
+    m.harden();
+    m.hardenerPost();
+    assert.equal(globalDns(m.io.dns()), "127.0.0.1");
+    assert.throws(
+      () => cleanup({ phase: "fallback", state, io: m.io }),
+      /original DNS restored after cleanup error: lost remove acknowledgement/,
+    );
+    assert.equal(fs.existsSync(target), false);
+    assert.equal(globalDns(m.io.dns()), "");
+    assert.equal(m.events.filter((event) => event === "restart").length, 1);
+  });
+});
+test("failed guard acknowledgement also leaves durable reload intent", () => {
+  const m = mock();
+  const state = install(m);
+  m.harden();
+  const root = m.io.root;
+  m.io.root = (mode, value) => {
+    const result = root(mode, value);
+    if (mode === "remove") throw new Error("lost guard acknowledgement");
+    return result;
+  };
+  assert.throws(() => cleanup({ phase: "guard", state, io: m.io }), /lost guard/);
+  assert.equal(m.load().guardRemovalVerified, undefined);
+  m.io.root = root;
+  m.hardenerPost();
+  assert.equal(cleanup({ phase: "fallback", state: m.load(), io: m.io }).restarted, true);
+});
+test("failed removal before unlink is reconciled once after positive ownership inspection", () => {
+  const m = mock();
+  const state = install(m);
+  m.harden();
+  m.hardenerPost();
+  const root = m.io.root;
+  let attempts = 0;
+  m.io.root = (mode, value) => {
+    if (mode === "remove" && ++attempts === 1) throw new Error("first removal failed");
+    return root(mode, value);
+  };
+  assert.throws(
+    () => cleanup({ phase: "fallback", state, io: m.io }),
+    /original DNS restored after cleanup error/,
+  );
+  assert.equal(attempts, 2);
+  assert.equal(m.present(), false);
+  assert.equal(globalDns(m.io.dns()), "");
+});
+test("persistent removal failure is bounded and does not reload with an owned file remaining", () => {
+  const m = mock();
+  const state = install(m);
+  m.harden();
+  m.hardenerPost();
+  const root = m.io.root;
+  let attempts = 0;
+  m.io.root = (mode, value) => {
+    if (mode === "remove") {
+      attempts++;
+      throw new Error("blocked unlink");
+    }
+    return root(mode, value);
+  };
+  assert.throws(() => cleanup({ phase: "fallback", state, io: m.io }), /override remains/);
+  assert.equal(attempts, 2);
+  assert.equal(m.events.includes("restart"), false);
+});
+test("foreign replacement after unlink is preserved and does not trigger blind reload", () => {
+  withRoot(({ op, target }) => {
+    const m = mock();
+    const bridge = m.io.root;
+    m.io.root = (mode, value) => {
+      const result = op(mode, value);
+      bridge(mode, value);
+      if (mode === "remove") {
+        fs.writeFileSync(target, "foreign replacement");
+        throw new Error("lost acknowledgement");
+      }
+      return result;
+    };
+    const state = install(m);
+    m.harden();
+    m.hardenerPost();
+    assert.throws(() => cleanup({ phase: "fallback", state, io: m.io }), /ownership/);
+    assert.equal(fs.readFileSync(target, "utf8"), "foreign replacement");
+    assert.equal(m.events.includes("restart"), false);
+  });
+});
+test("unavailable or malformed absence inspection cannot report restoration", () => {
+  for (const malformed of [false, true]) {
+    const m = mock();
+    const state = install(m);
+    m.harden();
+    m.hardenerPost();
+    const root = m.io.root;
+    m.io.root = (mode, value) => {
+      if (mode === "inspect") {
+        if (malformed) return {};
+        throw new Error("inspection failed");
+      }
+      return root(mode, value);
+    };
+    assert.throws(
+      () => cleanup({ phase: "fallback", state, io: m.io }),
+      /inspection failed|absence unverified/,
+    );
+    assert.equal(m.events.includes("restart"), false);
+  }
+});
+test("entry keeps failed status after lost unlink acknowledgement is repaired", () => {
+  const m = mock();
+  install(m);
+  m.harden();
+  m.hardenerPost();
+  const root = m.io.root;
+  const previous = process.exitCode;
+  const receipts = [];
+  m.io.root = (mode, value) => {
+    const result = root(mode, value);
+    if (mode === "remove") throw new Error("lost acknowledgement");
+    return result;
+  };
+  try {
+    entry("fallback", () => ({
+      ...m,
+      receipt: (phase, value) => receipts.push({ phase, ...value }),
+    }));
+    assert.equal(process.exitCode, 1);
+    assert.equal(globalDns(m.io.dns()), "");
+    assert.equal(
+      receipts.some((r) => r.disposition === "RESTORATION_VERIFIED"),
+      false,
+    );
+  } finally {
+    process.exitCode = previous;
+  }
+});
+test("failed guard-state persistence conservatively reloads in fallback", () => {
+  const m = mock();
+  const state = install(m);
+  m.harden();
+  const save = m.io.save;
+  m.io.save = () => {
+    throw new Error("state write failed");
+  };
+  assert.throws(() => cleanup({ phase: "guard", state, io: m.io }), /state write/);
+  assert.equal(m.load().guardRemovalVerified, undefined);
+  m.io.save = save;
+  m.hardenerPost();
+  assert.equal(cleanup({ phase: "fallback", state: m.load(), io: m.io }).restarted, true);
 });
