@@ -1,0 +1,9 @@
+---
+name: Register resolver cleanup before hardener post
+description: >-
+  No pre hook; main registers cleanup above the hardener in the post stack
+runs:
+  using: node24
+  main: main.cjs
+  post: post.cjs
+  post-if: always()
