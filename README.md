@@ -102,6 +102,10 @@ All workflows are manual (`workflow_dispatch`) with no automatic retries. Read
   resolver configuration. Runner placement is random.
 - [`dns-synthetic.yml`](.github/workflows/dns-synthetic.yml) creates the empty `DNS=` drop-in on
   ordinary runners and compares four arms.
+- [`dns-workaround.yml`](.github/workflows/dns-workaround.yml) tests a conditional pre-hardener
+  override on actual affected runners. It follows the
+  [native canary protocol](docs/native-canary-protocol.md). Source review or a green screened-out
+  job does not establish a working remedy.
 - `dns-counterfactual.yml` must not be run again. Its cleanup code relies on the same wrong
   assumption and has not been corrected.
 
