@@ -1,0 +1,14 @@
+---
+name: Suspect runner resolver diagnostic
+description: Screen before hardening and retain bounded read-only evidence
+inputs:
+  mode:
+    description: prepare, snapshot, api, payload, roundtrip, negative, or finish
+    required: true
+outputs:
+  candidate:
+    description: Whether pre-hardening screening selected detailed capture
+runs:
+  using: node24
+  pre: pre.cjs
+  main: main.cjs

@@ -1,0 +1,6 @@
+---
+execution:
+  enabled_tools: []
+  exclude:
+    - .lintro/
+    - coverage/

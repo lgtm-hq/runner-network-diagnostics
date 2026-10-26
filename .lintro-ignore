@@ -1,0 +1,3 @@
+# Generated tool reports and coverage output, never source.
+.lintro/
+coverage/
