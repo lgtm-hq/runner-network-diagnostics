@@ -1,0 +1,153 @@
+# Manual-only bounded suspect-runner capture for lgtm-ci incident 1203.
+---
+name: runner-dns-path-diagnostic
+run-name: DNS affected-setup sample — ${{ github.ref_name }}
+"on":
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: runner-dns-1203
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: >-
+      github.repository == 'lgtm-hq/runner-network-diagnostics' &&
+      github.ref == 'refs/heads/main'
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        runner: [ubuntu-24.04]
+        sample:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+          - 11
+          - 12
+          - 13
+          - 14
+          - 15
+          - 16
+          - 17
+          - 18
+          - 19
+          - 20
+          - 21
+          - 22
+          - 23
+          - 24
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Screen before hardening; capture suspect setup
+        if: always()
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/runner-probe@28541b502cbb4938c0d049da06123b8dea0fcf97
+        id: screen
+        with:
+          mode: prepare
+      - name: Harden using newer failing job exact pin
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2
+        with:
+          egress-policy: block
+          allowed-endpoints: |
+            github.com:443
+            api.github.com:443
+            codeload.github.com:443
+            objects.githubusercontent.com:443
+            results-receiver.actions.githubusercontent.com:443
+      - name: Capture effective resolver before checkout
+        if: always() && steps.screen.outputs.candidate == 'true'
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/runner-probe@28541b502cbb4938c0d049da06123b8dea0fcf97
+        with:
+          mode: snapshot
+      - name: Real checkout of dispatched commit
+        if: steps.screen.outputs.candidate == 'true'
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Read public GitHub API independently of checkout
+        if: always() && steps.screen.outputs.candidate == 'true'
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/runner-probe@28541b502cbb4938c0d049da06123b8dea0fcf97
+        with:
+          mode: api
+      - name: Prepare synthetic payload
+        if: steps.screen.outputs.candidate == 'true'
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/runner-probe@28541b502cbb4938c0d049da06123b8dea0fcf97
+        with:
+          mode: payload
+      - name: Upload synthetic payload
+        if: steps.screen.outputs.candidate == 'true'
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: network-payload-${{ matrix.runner }}-${{ matrix.sample }}
+          path: ${{ runner.temp }}/ci1203/payload.txt
+          if-no-files-found: error
+          retention-days: 90
+      - name: Download synthetic payload
+        if: steps.screen.outputs.candidate == 'true'
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: network-payload-${{ matrix.runner }}-${{ matrix.sample }}
+          path: ${{ runner.temp }}/ci1203-roundtrip
+      - name: Verify artifact roundtrip
+        if: steps.screen.outputs.candidate == 'true'
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/runner-probe@28541b502cbb4938c0d049da06123b8dea0fcf97
+        with:
+          mode: roundtrip
+      - name: Verify explicitly unallowed traffic is locally blocked
+        if: always() && steps.screen.outputs.candidate == 'true'
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/runner-probe@28541b502cbb4938c0d049da06123b8dea0fcf97
+        with:
+          mode: negative
+      - name: Freeze diagnostic evidence even on failure
+        if: always()
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/runner-probe@28541b502cbb4938c0d049da06123b8dea0fcf97
+        with:
+          mode: finish
+      - name: Preserve diagnostic text and checksums
+        if: always()
+        # Full SHA action reference must remain contiguous.
+        # yamllint disable-line rule:line-length
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: network-diagnostics-${{ matrix.runner }}-${{ matrix.sample }}
+          path: |
+            ${{ runner.temp }}/ci1203/*.txt
+            ${{ runner.temp }}/ci1203/*.json
+            ${{ runner.temp }}/ci1203/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 90
