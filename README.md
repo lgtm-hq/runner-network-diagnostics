@@ -1,214 +1,108 @@
 # Runner network diagnostics
 
-Isolated investigation for [lgtm-ci incident 1203](https://github.com/lgtm-hq/lgtm-ci/issues/1203).
-This repository does not deliver a fix or establish vendor responsibility.
-Existing personal-fixture evidence and releases remain unchanged.
+This repository investigates one problem: on some GitHub-hosted `ubuntu-24.04` runners in `westus2`,
+jobs that use [step-security/harden-runner](https://github.com/step-security/harden-runner) in block
+mode lose their DNS path through the hardener's agent. Git, API and runner result traffic is then
+dropped. The tracking issue is
+[lgtm-hq/lgtm-ci#1203](https://github.com/lgtm-hq/lgtm-ci/issues/1203).
 
-## First experiment
+This repository holds diagnostics only. It ships no fix, and it does not assign the fault to any
+vendor.
 
-One manual dispatch, **24 jobs maximum**, max parallelism 4, 8-minute timeout per
-job. No retries, automatic triggers, or replenishment. Maximum scheduled job-time
-budget is 192 minutes, excluding queueing. Early screening reduces work, but does
-not promise a particular bill or region placement. Public-repository execution
-uses lgtm-hq's Actions context, not the personal fixture's Actions allowance.
+## Current status
 
-Before the hardener pre hook, collect only compute region from IMDS, resolver
-file topology, experiment service state, listener presence and effective resolver
-configuration. Retain detailed capture when region is westus2, resolver topology
-is non-stub, an experiment marker is present, or screening information is unknown.
-This is a **suspect setup filter**, not proof a runner is affected. A screened-out
-job says NOT_SAMPLED; it cannot establish enforcement health or incident recovery.
+- Mechanism: observed on five affected runners (see below).
+- Remedy: untested on an affected runner.
+- Controlled reproduction: the
+  [corrected run](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40324625326) is
+  inconclusive. Its baseline passed four of four; its induced group has three of four because the
+  screen excluded one real westus2 host.
+- Production changes, vendor reports and merge clearance: none made from this work.
 
-On selected runners, preserve the original pre-hardener passive DNS capture,
-post-hardener topology, real checkout, public API read, synthetic artifact
-roundtrip and strict denied-destination control. Capture native nftables through
-the original snapshots. Do not perform resolver, firewall or service changes.
-Passive capture includes TCP/53; no active TCP/53 tests are made. The original
-finish step includes explicitly labelled active local-resolver comparisons after
-freezing the passive window; these are not part of its baseline.
+## Observed mechanism
 
-All helper pre hooks are ordered ahead of harden-runner's pre hook. Early screening
-runs there, not after checkout. The wrapper emits its selection during its main
-step, then the workflow gates expensive steps. Harden-runner's pre hook may still
-initialize on screened-out runners, and final artifact publication still runs.
+On five `westus2` runners in
+[run 40294837589](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40294837589),
+the following was captured before and after the hardener started:
 
-Record actual engine selection, agent hashes, both setup-log and in-VM image
-versions, region, experiment markers, resolver routing, timestamped wire evidence,
-application/destination/drop matches, strict control and external terminal status.
-TLS engine selection may make the strict control inconclusive; do not relax it.
-No affected samples means inconclusive: stop rather than dispatch again.
-Healthy checkout alone is not evidence of active enforcement or path recovery.
+1. Before the first workflow step, the runner already has
+   `/etc/systemd/resolved.conf.d/90-egress-proxy.conf` with an empty `DNS=` line, and a resolver
+   forwarder at `127.0.0.100`. This repository did not create either. Their origin is not
+   established here.
+2. The hardener writes `DNS=127.0.0.1` and `Domains=~.` to `/etc/systemd/resolved.conf` and restarts
+   systemd-resolved.
+3. systemd-resolved reads drop-ins after the main file, so the empty `DNS=` clears the global DNS
+   list. `resolvectl` shows no global DNS server. The `~.` routing domain remains.
+4. Packet captures show application lookups going through `127.0.0.100`, then `127.0.0.53`, then
+   Azure DNS (`168.63.129.16`, answered over TCP), with zero queries to the agent on `127.0.0.1:53`.
+5. When Azure's answer differs from the address the agent learned, the agent has not allowed that
+   address and the connection is dropped. Checkout succeeds only when the two answers happen to
+   match.
 
-A job timeout can prevent final artifact publication. Console logs and outside API
-receipts must also be retained; missing evidence remains missing, never a pass.
-Artifact retention is 90 days; freeze analyzed evidence in a new durable bundle.
-Do not alter previous bundles. No vendor posts are authorized.
+The affected jobs also dropped runner result traffic and later ended as cancelled. The cause of the
+completion delays remains unproven.
 
-## Source provenance
+What this does not show: which component should change, whether restoring global DNS alone fixes the
+affected runners, or whether every hardener security property holds. See
+[docs/evidence.md](docs/evidence.md) for the per-sample references and verification.
 
-`vendor/network-probe/` is a byte-identical copy from public
-`TurboCoder13/lgtm-ci-consumer-fixture/scripts/network-probe` at commit
-`41ccbb0e34f7522f231bb5ac1853b67fcda22ba8`, approved in prior independent Sol reviews.
-`vendor/SHA256SUMS` records copied source hashes. The wrapper adds screening and
-resolver configuration capture; it keeps the original evidence-completeness and
-strict negative-control logic. Copying this source into HQ removes runtime code
-availability dependence on the personal repository; its public API metadata read
-is retained and does not dispatch personal workflows.
+<details>
+<summary>Versions on the affected runners</summary>
 
-Every source change requires an independent Sol review before publication or
-execution. Pins in the workflow must identify the reviewed helper commit exactly.
-Do not add paid AI review workflows or weaken egress enforcement.
+| Component    | Value                                                                                                                                                                                                             |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Region       | `westus2`                                                                                                                                                                                                         |
+| Runner image | `ubuntu-24.04`, setup log `20261012.334.1`, in-VM `ImageVersion=20261023.334.3`                                                                                                                                   |
+| Runner       | `2.338.0`                                                                                                                                                                                                         |
+| Hardener     | [dc2769a](https://github.com/step-security/harden-runner/commit/dc2769abcc0fcfbadfc1df54081c1608579ef6b2), [v2.22.2](https://github.com/step-security/harden-runner/releases/tag/v2.22.2), `egress-policy: block` |
+| Agent        | [community agent v0.17.0 source](https://github.com/step-security/agent/tree/f4d56dfedf8e7c4a1808719fc7792ea69be22e31), binary SHA-256 `ea7bcabe6f72949e4e68f4feb57f83b6f63b4e1bff8b90d4af5952df48b46d99`         |
 
-## Local checks
+The healthy `westus3` control in the same run used the same image, runner and pins, without the
+drop-in or `127.0.0.100`.
 
-```sh
-node --test scripts/runner-probe/screen.test.cjs vendor/network-probe/capture.test.cjs
-bats vendor/network-probe/negative-verdict.bats
-lintro fmt
-lintro chk
-actionlint
-shellcheck scripts/runner-probe/topology.sh vendor/network-probe/probe.sh
-shfmt -d scripts/runner-probe/topology.sh vendor/network-probe/probe.sh
-sha256sum -c vendor/SHA256SUMS
-```
+</details>
 
-All checks on a PR must pass under the owner's merge policy, including checks
-GitHub does not designate required. This experiment changes no production repos.
+## Run ledger
 
-## Native counterfactual
+Each run is reported on its own. Results are never pooled across runs, and a reviewed source change
+is not a result.
 
-The first run is complete: five affected westus2 captures, one full ordinary
-control, and eighteen screening-only jobs. Both independent causality reviews
-confirm an existing `90-egress-proxy.conf` empty `DNS=` reset overrides the
-hardener's main-file global DNS setting. This establishes an interaction, not
-exclusive vendor responsibility or a validated fix.
+| Run                                                                                           | Date       | Purpose                           | Jobs | Outcome                                                                                  |
+| --------------------------------------------------------------------------------------------- | ---------- | --------------------------------- | ---- | ---------------------------------------------------------------------------------------- |
+| [40294837589](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40294837589) | 2026-10-26 | Passive capture                   | 24   | 5 affected `westus2` captures, 1 healthy control, 18 screened out                        |
+| [40304555915](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40304555915) | 2026-10-26 | Native counterfactual             | 24   | Inconclusive: no affected runner was placed, no override installed                       |
+| [40313241012](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40313241012) | 2026-10-26 | Controlled reproduction           | 16   | Inconclusive: baseline 3 of 4 valid, induced arm invalid, cleanup checks failed 16 of 16 |
+| [40324625326](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40324625326) | 2026-10-26 | Corrected controlled reproduction | 16   | Inconclusive: baseline 4/4, induced 3/4; one real-host exclusion                         |
 
-`dns-counterfactual.yml` was independently reviewed and dispatched once on
-2026-10-26 (run 40304555915). All 24 jobs succeeded, but none had the affected
-topology and no override was installed. The result is inconclusive for the fix.
-The original workflow and vendored probe remain unchanged. Neither historical
-batch is permission for an automatic repeat.
+Screened-out jobs did not run the diagnostic checks. Their green status says nothing about runner
+health. The cleanup failures in run 40313241012 came from a wrong assumption in this repository's
+test code, not from a vendor defect. [docs/runs.md](docs/runs.md) has per-run detail, limits and the
+earlier runs in the personal fixture repository.
 
-Odd samples are treatment, even samples unchanged controls. Before hardener pre,
-treatment requires the exact captured topology and empty DNS reset; unknown or
-different setups are `NOT_APPLICABLE`. It atomically adds only an owned later
-`DNS=127.0.0.1` drop-in and relies on the hardener's normal restart. No allowlist,
-firewall, experiment service, resolver symlink or original config is changed.
-Successful checkout alone never demonstrates a healthy DNS path.
+## Evidence
 
-**Known limitation discovered in synthetic run 40313241012:** the frozen native
-cleanup incorrectly assumes hardener post restores the main resolver file. That
-code was never exercised in the native run (zero applicable hosts). Do not repeat
-the native treatment workflow until its cleanup is separately corrected and
-reviewed. The following describes that historical implementation, not validated
-restoration behavior.
+Each run has a checksummed bundle with raw job logs, GitHub API records, artifacts and recovered
+console files. The index with download links and SHA-256 values is
+[docs/evidence.md](docs/evidence.md). Where an artifact upload failed, files were rebuilt from
+console output only when they matched the hash the job printed.
 
-An action without pre registers a guard post during main, above the hardener's
-pre-registered post in the runner's LIFO stack. It removes the override without
-restarting resolved, preserving the live agent path until hardener cleanup.
-An earlier action's fallback post executes after the hardener. Unless guard
-removal was positively acknowledged and saved, it treats the durable mutation
-intent as requiring a reload. A lost unlink acknowledgement is
-reconciled by ownership-aware absence inspection and at most one more removal
-attempt. Once absence is established, it reloads resolved and preserves the
-original error as a failed job. It verifies original main/platform config hashes
-and original effective global DNS. Failures
-remain failures, including partial hardener initialization that cannot restore.
-Post receipts are hashed and printed to console separately from frozen probe
-files; collect terminal logs, not just the pre-post diagnostic artifact.
+## Open questions
 
-This ordering follows `actions/runner` v2.338.0 `ActionRunner.RunAsync`
-(post registered before pre/main handler execution), and
-`ExecutionContext.RegisterPostJobStep` (first registration wins; LIFO stack).
-Local lifecycle tests simulate these paths; hosted mutation ordering remains
-unproven because the native counterfactual found no applicable runner.
+- What writes `90-egress-proxy.conf` and the `127.0.0.100` forwarder, and on which runners.
+- Whether a later `DNS=127.0.0.1` drop-in, placed before the hardener starts, restores the agent
+  path on an affected runner.
+- Whether the dropped runner result traffic causes the 13-minute cancellations.
 
-A future treatment pass needs fresh agent-path wire evidence, successful
-checkout/API/artifact roundtrip, the unchanged strict denied-destination control,
-verified full evidence upload, cleanup receipts and externally confirmed prompt
-completion. Require affected captures in both arms; an unbalanced or empty
-sample is inconclusive and does not authorize replenishment or rollout.
+## Reproducing
 
-Additional local tests:
+All workflows are manual (`workflow_dispatch`) with no automatic retries. Read
+[docs/methodology.md](docs/methodology.md) before requesting a dispatch.
 
-```sh
-node --test --experimental-test-coverage scripts/resolver-counterfactual/control.test.cjs
-```
+- [`dns-path.yml`](.github/workflows/dns-path.yml) collects observations without changing the
+  resolver configuration. Runner placement is random.
+- [`dns-synthetic.yml`](.github/workflows/dns-synthetic.yml) creates the empty `DNS=` drop-in on
+  ordinary runners and compares four arms.
+- `dns-counterfactual.yml` must not be run again. Its cleanup code relies on the same wrong
+  assumption and has not been corrected.
 
-## Controlled synthetic reproduction
-
-The owner authorized a separately reviewed controlled reproduction in this public
-HQ repository. `dns-synthetic.yml` is a new manual-only experiment: four arms with
-four replicates each, maximum parallelism four, configured eight-minute job
-timeout, no retries. No production rollout or vendor posts are authorized.
-
-C0 is unchanged. I1 creates an owned empty `DNS=` reset at the captured platform
-path before hardener pre. I2 adds the same reset plus the late-sorting
-`DNS=127.0.0.1` override before hardener pre. I3 measures the induced state first,
-then adds the override and restarts resolved once for a same-host comparison.
-Every arm uses the original failing hardener pin, block policy and allowlist.
-The original native `applicable()` and workflow are unchanged; a separate
-synthetic predicate requires a positively observed ordinary hosted stub topology.
-It uses a separate bounded, unfiltered `systemd-analyze cat-config` read, records
-its bytes/hash/status/errors, and refuses failed reads, unexpected source files
-or any active setting. The diagnostic excerpt is never mutation authorization.
-Real experiment hosts and unknown topologies receive no synthetic mutation.
-
-The full pinned hardener source and community agent v0.17.0 were checked read-only
-for special handling of the platform filename and resolved drop-in directory;
-neither string occurs. Runtime agent identity still needs verification: this
-source inspection does not cover arbitrary closed-source engines.
-
-All arms collect wire evidence. Timestamped oracle A resolves `api.github.com`
-and `example.com` through the application resolver after agent initialization;
-I3 records a second oracle B after its repair. Agent-path queries, effective
-global DNS and fresh agent attribution determine fidelity. Checkout success
-alone is insufficient because independent DNS answers can coincide. If C0 is
-invalid, or I1 fails to reproduce the captured bypass in every replicate, do
-not interpret treatment arms as fixing the captured incident. SERVFAIL without
-the captured return path is partial fidelity only.
-
-The single authorized synthetic run (40313241012) is complete and inconclusive:
-one baseline oracle and two induced-only oracles raced agent initialization,
-all cleanup checks assumed an unimplemented vendor revert, and induced-only
-artifact uploads failed. Observed path recovery is descriptive evidence only.
-No new dispatch or production remedy is authorized by those observations.
-
-The revised experiment has not been dispatched. Any repeat requires independent
-verification of the exact signed helper/workflow pins and a new execution allowance.
-It waits on a monotonic 20-second deadline for agent readiness before measuring,
-with separately bounded probes and an independent readiness receipt; terminal
-status errors fail immediately. Missing readiness never becomes an oracle.
-The synthetic platform file stays in place until after guard, hardener
-post and the synthetic-only treatment fallback. That fallback reloads resolved
-after override removal; it verifies the main file observed at oracle-A remains
-unchanged,
-the platform file is unchanged and Global DNS is empty while the reset remains.
-The final post removes the owned platform file, verifies absence, restarts
-resolved once and checks the main hash observed at oracle-A, Global localhost DNS,
-Azure per-link DNS and successful application resolution. It never restores or
-edits the vendor main file, or stops the agent. Each condition and available
-observation is reported separately; an unknown main-file baseline fails closed.
-Ownership failures, lost acknowledgements and cleanup errors remain failures.
-Each synthetic receipt is labelled and checksummed. Before upload, the revised
-helper prints bounded base64 chunks of every upload file, including manifests,
-with its size and SHA-256. The fixed file set has limits of 64 files, 256 KiB
-per file and 1 MiB per job. Symlinks, unmanifested files, token-like contents and
-limits fail the copy without printing the refused contents. A closing inventory
-commits every file header. A future preregistration may accept complete independently
-reconstructed console evidence when the induced fault blocks artifact uploads;
-this does not change the old run's artifact requirement. Rebuild console
-evidence for all jobs and require byte-for-byte agreement wherever artifacts
-exist. Do not pool a future run with historical observations. Posts occur after
-evidence upload; retain terminal console logs as well as artifacts.
-
-Even a full synthetic pass establishes only sufficiency on the ordinary stub
-topology. It does not validate GitHub's `.100` forwarder/proxy, mid-job platform
-rewrites, actual westus2 remediation, vendor attribution or rollout suitability.
-Existing PR holds and all-checks merge policy remain unchanged.
-
-Additional local regression suite:
-
-```sh
-node --test --experimental-test-coverage scripts/synthetic-induce/*.test.cjs scripts/synthetic-finish/*.test.cjs
-```
+[docs/provenance.md](docs/provenance.md) lists the exact commits and the vendored probe source.
