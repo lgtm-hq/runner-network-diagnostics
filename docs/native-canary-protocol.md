@@ -18,7 +18,11 @@ This registration starts a separate experiment with new observations and a fresh
 correction rounds and bounds timeouts in the shim and shared oracle probe, and ensures an
 unexpected readiness exception still reaches owned-file safety recovery. The previous run's
 26 jobs, control observation, no-op counts and wrapper recoveries count only as history.
-All efficacy gates, minimums and adoption requirements below remain in force.
+The local-hop requirement is also revised prospectively before this registration is frozen. Earlier
+wording forbade the forwarder's local hop to the stub, which S1 deliberately leaves in place. No
+previous run measured an affected treatment host, and no earlier approval covers this new wording.
+The revised rule requires the agent's matched answer and permits only the registered loopback DNS
+chain in captured nonce traffic. Minimums and adoption requirements remain in force.
 
 ## Workaround lifecycle
 
@@ -114,10 +118,33 @@ Every valid affected treatment observation must pass all of these:
 - The action reports effective enforcement. Global DNS is exactly `127.0.0.1`, `~.` remains, the local agent
   listener exists, and the hardener's resolver restart occurred after file creation.
 - The platform drop-in is unchanged. The owned override remains intact at both measurement phases.
-- Each fresh nonce has a query to and response from the agent listener within its recorded window. The
-  response must carry the dispatch sinkhole address. At both A and Z, zero packets for that exact phase nonce
-  may reach Azure DNS or leave `127.0.0.100` toward any upstream. Separately, no captured DNS traffic from any
-  process, on any protocol, may reach Azure DNS after verification and before capture freeze.
+- Each fresh nonce has a query to and a matching response from the agent listener
+  `127.0.0.1:53` within its recorded window. Match the complete DNS name and type, protocol,
+  reversed client/server endpoints, DNS transaction ID and chronology. Credit only that nonce's
+  answer or a validated alias chain. The agent response must carry the dispatch sinkhole address;
+  no agent response for that nonce may carry a non-reference address. Unsupported or truncated
+  transaction framing blocks a passing result.
+- The workaround leaves `/etc/resolv.conf` unchanged. The expected path is application to the
+  platform forwarder `127.0.0.100:53`, forwarder to the resolved stub `127.0.0.53:53`, then stub to
+  agent. These three DNS server endpoints are the registered local hops. A local hop is a captured
+  packet on `lo` with both addresses in `127.0.0.0/8` and a registered server endpoint: the
+  destination for a query or the source for a response. Client ports remain ephemeral.
+- At A and Z, every captured query or response for the phase nonce must be a registered local hop.
+  No such record may reach or come from Azure DNS, cross a non-loopback interface, or use another
+  DNS server address or port. Report an unregistered loopback endpoint as a topology deviation and
+  fail the gate. An exact-nonce query outside its window also fails. Search-suffixed variants do not
+  supply exact-nonce proof and remain subject to the off-path traffic check. A nonce-bearing record
+  that cannot be parsed blocks a passing result.
+- Hop order and forwarding are descriptive. Report whether the path was through the forwarder,
+  directly through the stub, directly to the agent or otherwise. Claim passage through the platform
+  forwarder only when both A and Z demonstrate it. Wire gates use raw packet presence or absence;
+  bounded deduplication of interface copies affects reported counts only. Never erase same-interface
+  repetitions, time-separated packets, retransmissions or different DNS transactions.
+- Separately, no captured DNS traffic from any process, on any protocol, may reach Azure DNS after
+  verification and before capture freeze. Verify coherent verification, phase and freeze timestamps
+  and capture coverage before treating an empty interval as absence, including on timeout safety paths.
+- The unchanged capture filter records port-53 traffic on loopback or to Azure DNS. These wire gates
+  cannot establish the absence of other remote or encrypted resolvers; every result states this limit.
 - The denied nonce resolves to the same-dispatch sinkhole reference and the agent records its denial. Its
   answer is outside the baseline public-answer set, which may be empty for NXDOMAIN.
 - The existing strict negative connection control reports `CONFIRMED_BLOCK` for its exact address and curl
