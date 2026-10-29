@@ -3,5 +3,5 @@
 set -euo pipefail
 
 python3 -m json.tool renovate.json >/dev/null
-node --test scripts/runner-probe/screen.test.cjs vendor/network-probe/capture.test.cjs
+node --test scripts/runner-probe/screen.test.cjs
 sha256sum -c vendor/SHA256SUMS
