@@ -1,0 +1,8 @@
+---
+name: ci1203 synthetic-guard
+description: Isolated synthetic DNS configuration experiment
+runs:
+  using: node24
+  main: main.cjs
+  post: post.cjs
+  post-if: always()

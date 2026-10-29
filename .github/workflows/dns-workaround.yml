@@ -1,0 +1,220 @@
+---
+name: runner-dns-native-workaround
+run-name: Native DNS workaround — ${{ github.ref_name }}
+"on":
+  workflow_dispatch:
+    inputs:
+      include_drills:
+        description: >-
+          Enable until at least two safe-host rollback drills have executed
+        type: boolean
+        required: false
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: runner-dns-1203-workaround
+  cancel-in-progress: false
+# Helpers are pinned to the signed correction reviewed before publication.
+# No reruns. Enable drills only while fewer than two have executed.
+jobs:
+  probe:
+    if: >-
+      github.repository == 'lgtm-hq/runner-network-diagnostics' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/main' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        arm: [T, C]
+        replicate: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    env:
+      WORKAROUND_REPLICATE: ${{ matrix.replicate }}
+    steps:
+      - name: Freeze native placement and baseline before hardener pre
+        if: always()
+        id: screen
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: screen
+          arm: ${{ matrix.arm }}
+          hosted: ${{ runner.environment }}
+      - name: Preserve agent DNS path before hardener pre
+        if: always()
+        id: shim
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/agent-dns-shim@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: ${{ matrix.arm == 'T' && 'apply' || 'observe' }}
+          hosted: ${{ runner.environment }}
+      - name: Harden using unchanged original pin and policy
+        if: always()
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2
+        with:
+          egress-policy: block
+          allowed-endpoints: |
+            github.com:443
+            api.github.com:443
+            codeload.github.com:443
+            objects.githubusercontent.com:443
+            results-receiver.actions.githubusercontent.com:443
+      - name: Oracle A after bounded readiness
+        if: always() && steps.screen.outputs.eligible == 'true'
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: A
+          hosted: ${{ runner.environment }}
+      - name: Unaffected nonce and same-dispatch sinkhole reference
+        if: always() && steps.screen.outputs.eligible != 'true'
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: U
+          hosted: ${{ runner.environment }}
+      - name: Real checkout
+        if: always() && steps.screen.outputs.eligible == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Public API independently of checkout
+        if: always() && steps.screen.outputs.eligible == 'true'
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: api
+      - name: Prepare native payload
+        if: always() && steps.screen.outputs.eligible == 'true'
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: payload
+      - name: Upload payload
+        if: always() && steps.screen.outputs.eligible == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: >-
+            ci1203-workaround-payload-${{ matrix.arm }}-${{ matrix.replicate }}
+          path: ${{ runner.temp }}/ci1203/payload.txt
+          if-no-files-found: error
+          retention-days: 90
+      - name: Download payload
+        if: always() && steps.screen.outputs.eligible == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: >-
+            ci1203-workaround-payload-${{ matrix.arm }}-${{ matrix.replicate }}
+          path: ${{ runner.temp }}/ci1203-roundtrip
+      - name: Verify artifact roundtrip
+        if: always() && steps.screen.outputs.eligible == 'true'
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: roundtrip
+      - name: Unchanged strict negative control
+        if: always() && steps.screen.outputs.eligible == 'true'
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: negative
+          hosted: ${{ runner.environment }}
+      - name: Oracle Z after application and negative control
+        if: always() && steps.screen.outputs.eligible == 'true'
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: Z
+          hosted: ${{ runner.environment }}
+      - name: Freeze capture and copy all native evidence to console
+        if: always()
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: finish
+          hosted: ${{ runner.environment }}
+      - name: Preserve fixed native evidence inventory
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: >-
+            ci1203-workaround-evidence-${{ matrix.arm }}-${{ matrix.replicate }}
+          path: |
+            ${{ runner.temp }}/ci1203/*.txt
+            ${{ runner.temp }}/ci1203/*.json
+            ${{ runner.temp }}/ci1203/SHA256SUMS
+            ${{ runner.temp }}/ci1203-workaround/*.txt
+            ${{ runner.temp }}/ci1203-workaround/*.json
+            ${{ runner.temp }}/ci1203-workaround/SHA256SUMS
+            ${{ runner.temp }}/lgtm-agent-dns-shim/*.txt
+            ${{ runner.temp }}/lgtm-agent-dns-shim/*.json
+            ${{ runner.temp }}/lgtm-agent-dns-shim/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 90
+  drill:
+    if: >-
+      github.repository == 'lgtm-hq/runner-network-diagnostics' &&
+      github.event.repository.private == false &&
+      github.ref == 'refs/heads/main' && github.run_attempt == 1 &&
+      inputs.include_drills == true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        replicate: [1, 2]
+    env:
+      WORKAROUND_REPLICATE: ${{ matrix.replicate }}
+    steps:
+      - name: Owned rollback drill on positively safe ordinary host
+        if: always()
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: drill
+          hosted: ${{ runner.environment }}
+      - name: Freeze drill evidence without starting vendor capture
+        if: always()
+        # Full immutable action SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/workaround-probe@4da9c6ec8b0e18912216b9c85fc7618df20dad4e
+        with:
+          mode: finish
+          hosted: ${{ runner.environment }}
+      - name: Preserve fixed native evidence inventory
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: ci1203-workaround-drill-evidence-${{ matrix.replicate }}
+          path: |
+            ${{ runner.temp }}/ci1203/*.txt
+            ${{ runner.temp }}/ci1203/*.json
+            ${{ runner.temp }}/ci1203/SHA256SUMS
+            ${{ runner.temp }}/ci1203-workaround/*.txt
+            ${{ runner.temp }}/ci1203-workaround/*.json
+            ${{ runner.temp }}/ci1203-workaround/SHA256SUMS
+            ${{ runner.temp }}/lgtm-agent-dns-shim/*.txt
+            ${{ runner.temp }}/lgtm-agent-dns-shim/*.json
+            ${{ runner.temp }}/lgtm-agent-dns-shim/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,6 @@
+---
+name: Freeze synthetic experiment evidence
+description: Freeze original capture and checksum synthetic observations
+runs:
+  using: node24
+  main: main.cjs

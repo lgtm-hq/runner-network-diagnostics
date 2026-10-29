@@ -1,0 +1,25 @@
+---
+name: Native DNS workaround canary observations
+description: Read-only selection, oracle windows and bounded native evidence
+inputs:
+  mode:
+    description: screen, A, Z, U, negative, finish, or drill
+    required: true
+  arm:
+    description: Matrix-assigned T or C (screen only)
+    required: false
+  hosted:
+    description: Explicit runner.environment, never inferred from environment
+    required: true
+outputs:
+  eligible:
+    description: Exact pre-hardener native fingerprint, without region
+  candidate:
+    description: Broad passive selection for capture
+  classification:
+    description: Pre-outcome ELIGIBLE, PARTIAL, or UNAFFECTED
+runs:
+  using: node24
+  pre: pre.cjs
+  pre-if: always()
+  main: main.cjs

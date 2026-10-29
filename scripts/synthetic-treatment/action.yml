@@ -1,0 +1,10 @@
+---
+name: ci1203 synthetic-treatment
+description: Isolated synthetic DNS configuration experiment
+runs:
+  using: node24
+  pre: pre.cjs
+  pre-if: always()
+  main: main.cjs
+  post: post.cjs
+  post-if: always()

@@ -1,0 +1,17 @@
+---
+name: ci1203 synthetic-induce
+description: Isolated synthetic DNS configuration experiment
+inputs:
+  arm:
+    description: Synthetic arm C0, I1, I2 or I3
+    required: true
+  hosted:
+    description: Explicit runner.environment observation
+    required: true
+runs:
+  using: node24
+  pre: pre.cjs
+  pre-if: always()
+  main: main.cjs
+  post: post.cjs
+  post-if: always()

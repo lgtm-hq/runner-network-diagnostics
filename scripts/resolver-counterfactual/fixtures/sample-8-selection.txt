@@ -1,0 +1,1 @@
+{"candidate":true,"reasons":["historically affected region","non-stub or unknown resolver topology","resolver experiment active or unknown","proxy experiment active or unknown","experiment listener present or unknown"],"facts":{"region":"westus2","target":"/etc/resolv.conf","resolverUnit":"active","proxyUnit":"active","listener":"present"},"timestamp":"2026-10-26T08:49:03.901Z"}

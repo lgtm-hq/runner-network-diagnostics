@@ -1,0 +1,16 @@
+---
+name: Bounded resolver counterfactual
+description: >-
+  Install one owned DNS override before hardening, restore after cleanup
+inputs:
+  sample:
+    description: >-
+      Matrix sample number, 1 through 24; odd treatment, even unchanged
+    required: true
+runs:
+  using: node24
+  pre: pre.cjs
+  pre-if: always()
+  main: main.cjs
+  post: post.cjs
+  post-if: always()

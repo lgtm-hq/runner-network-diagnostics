@@ -1,76 +1,113 @@
 # Runner network diagnostics
 
-Isolated investigation for [lgtm-ci incident 1203](https://github.com/lgtm-hq/lgtm-ci/issues/1203).
-This repository does not deliver a fix or establish vendor responsibility.
-Existing personal-fixture evidence and releases remain unchanged.
+This repository investigates one problem: on some GitHub-hosted `ubuntu-24.04` runners in `westus2`,
+jobs that use [step-security/harden-runner](https://github.com/step-security/harden-runner) in block
+mode lose their DNS path through the hardener's agent. Git, API and runner result traffic is then
+dropped. The tracking issue is
+[lgtm-hq/lgtm-ci#1203](https://github.com/lgtm-hq/lgtm-ci/issues/1203).
 
-## First experiment
+This repository holds diagnostics only. It ships no fix, and it does not assign the fault to any
+vendor.
 
-One manual dispatch, **24 jobs maximum**, max parallelism 4, 8-minute timeout per
-job. No retries, automatic triggers, or replenishment. Maximum scheduled job-time
-budget is 192 minutes, excluding queueing. Early screening reduces work, but does
-not promise a particular bill or region placement. Public-repository execution
-uses lgtm-hq's Actions context, not the personal fixture's Actions allowance.
+## Current status
 
-Before the hardener pre hook, collect only compute region from IMDS, resolver
-file topology, experiment service state, listener presence and effective resolver
-configuration. Retain detailed capture when region is westus2, resolver topology
-is non-stub, an experiment marker is present, or screening information is unknown.
-This is a **suspect setup filter**, not proof a runner is affected. A screened-out
-job says NOT_SAMPLED; it cannot establish enforcement health or incident recovery.
+- Mechanism: observed on five affected runners (see below).
+- Remedy: untested on an affected runner.
+- Controlled reproduction: the
+  [corrected run](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40324625326) is
+  inconclusive. Its baseline passed four of four; its induced group has three of four because the
+  screen excluded one real westus2 host.
+- Production changes, vendor reports and merge clearance: none made from this work.
 
-On selected runners, preserve the original pre-hardener passive DNS capture,
-post-hardener topology, real checkout, public API read, synthetic artifact
-roundtrip and strict denied-destination control. Capture native nftables through
-the original snapshots. Do not perform resolver, firewall or service changes.
-Passive capture includes TCP/53; no active TCP/53 tests are made. The original
-finish step includes explicitly labelled active local-resolver comparisons after
-freezing the passive window; these are not part of its baseline.
+## Observed mechanism
 
-All helper pre hooks are ordered ahead of harden-runner's pre hook. Early screening
-runs there, not after checkout. The wrapper emits its selection during its main
-step, then the workflow gates expensive steps. Harden-runner's pre hook may still
-initialize on screened-out runners, and final artifact publication still runs.
+On five `westus2` runners in
+[run 40294837589](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40294837589),
+the following was captured before and after the hardener started:
 
-Record actual engine selection, agent hashes, both setup-log and in-VM image
-versions, region, experiment markers, resolver routing, timestamped wire evidence,
-application/destination/drop matches, strict control and external terminal status.
-TLS engine selection may make the strict control inconclusive; do not relax it.
-No affected samples means inconclusive: stop rather than dispatch again.
-Healthy checkout alone is not evidence of active enforcement or path recovery.
+1. Before the first workflow step, the runner already has
+   `/etc/systemd/resolved.conf.d/90-egress-proxy.conf` with an empty `DNS=` line, and a resolver
+   forwarder at `127.0.0.100`. This repository did not create either. Their origin is not
+   established here.
+2. The hardener writes `DNS=127.0.0.1` and `Domains=~.` to `/etc/systemd/resolved.conf` and restarts
+   systemd-resolved.
+3. systemd-resolved reads drop-ins after the main file, so the empty `DNS=` clears the global DNS
+   list. `resolvectl` shows no global DNS server. The `~.` routing domain remains.
+4. Packet captures show application lookups going through `127.0.0.100`, then `127.0.0.53`, then
+   Azure DNS (`168.63.129.16`, answered over TCP), with zero queries to the agent on `127.0.0.1:53`.
+5. When Azure's answer differs from the address the agent learned, the agent has not allowed that
+   address and the connection is dropped. Checkout succeeds only when the two answers happen to
+   match.
 
-A job timeout can prevent final artifact publication. Console logs and outside API
-receipts must also be retained; missing evidence remains missing, never a pass.
-Artifact retention is 90 days; freeze analyzed evidence in a new durable bundle.
-Do not alter previous bundles. No vendor posts are authorized.
+The affected jobs also dropped runner result traffic and later ended as cancelled. The cause of the
+completion delays remains unproven.
 
-## Source provenance
+What this does not show: which component should change, whether restoring global DNS alone fixes the
+affected runners, or whether every hardener security property holds. See
+[docs/evidence.md](docs/evidence.md) for the per-sample references and verification.
 
-`vendor/network-probe/` is a byte-identical copy from public
-`TurboCoder13/lgtm-ci-consumer-fixture/scripts/network-probe` at commit
-`41ccbb0e34f7522f231bb5ac1853b67fcda22ba8`, approved in prior independent Sol reviews.
-`vendor/SHA256SUMS` records copied source hashes. The wrapper adds screening and
-resolver configuration capture; it keeps the original evidence-completeness and
-strict negative-control logic. Copying this source into HQ removes runtime code
-availability dependence on the personal repository; its public API metadata read
-is retained and does not dispatch personal workflows.
+<details>
+<summary>Versions on the affected runners</summary>
 
-Every source change requires an independent Sol review before publication or
-execution. Pins in the workflow must identify the reviewed helper commit exactly.
-Do not add paid AI review workflows or weaken egress enforcement.
+| Component    | Value                                                                                                                                                                                                             |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Region       | `westus2`                                                                                                                                                                                                         |
+| Runner image | `ubuntu-24.04`, setup log `20261012.334.1`, in-VM `ImageVersion=20261023.334.3`                                                                                                                                   |
+| Runner       | `2.338.0`                                                                                                                                                                                                         |
+| Hardener     | [dc2769a](https://github.com/step-security/harden-runner/commit/dc2769abcc0fcfbadfc1df54081c1608579ef6b2), [v2.22.2](https://github.com/step-security/harden-runner/releases/tag/v2.22.2), `egress-policy: block` |
+| Agent        | [community agent v0.17.0 source](https://github.com/step-security/agent/tree/f4d56dfedf8e7c4a1808719fc7792ea69be22e31), binary SHA-256 `ea7bcabe6f72949e4e68f4feb57f83b6f63b4e1bff8b90d4af5952df48b46d99`         |
 
-## Local checks
+The healthy `westus3` control in the same run used the same image, runner and pins, without the
+drop-in or `127.0.0.100`.
 
-```sh
-node --test scripts/runner-probe/screen.test.cjs vendor/network-probe/capture.test.cjs
-bats vendor/network-probe/negative-verdict.bats
-lintro fmt
-lintro chk
-actionlint
-shellcheck scripts/runner-probe/topology.sh vendor/network-probe/probe.sh
-shfmt -d scripts/runner-probe/topology.sh vendor/network-probe/probe.sh
-sha256sum -c vendor/SHA256SUMS
-```
+</details>
 
-All checks on a PR must pass under the owner's merge policy, including checks
-GitHub does not designate required. This experiment changes no production repos.
+## Run ledger
+
+Each run is reported on its own. Results are never pooled across runs, and a reviewed source change
+is not a result.
+
+| Run                                                                                           | Date       | Purpose                           | Jobs | Outcome                                                                                         |
+| --------------------------------------------------------------------------------------------- | ---------- | --------------------------------- | ---- | ----------------------------------------------------------------------------------------------- |
+| [40294837589](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40294837589) | 2026-10-26 | Passive capture                   | 24   | 5 affected `westus2` captures, 1 healthy control, 18 screened out                               |
+| [40304555915](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40304555915) | 2026-10-26 | Native counterfactual             | 24   | Inconclusive: no affected runner was placed, no override installed                              |
+| [40313241012](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40313241012) | 2026-10-26 | Controlled reproduction           | 16   | Inconclusive: baseline 3 of 4 valid, induced arm invalid, cleanup checks failed 16 of 16        |
+| [40324625326](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40324625326) | 2026-10-26 | Corrected controlled reproduction | 16   | Inconclusive: baseline 4/4, induced 3/4; one real-host exclusion                                |
+| [40405104019](https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40405104019) | 2026-10-26 | Native workaround canary          | 26   | Failed: both rollback drills hit a timeout bug in this repository; no affected treatment runner |
+
+Screened-out jobs did not run the diagnostic checks. Their green status says nothing about runner
+health. The cleanup failures in run 40313241012 came from a wrong assumption in this repository's
+test code, not from a vendor defect. [docs/runs.md](docs/runs.md) has per-run detail, limits and the
+earlier runs in the personal fixture repository.
+
+## Evidence
+
+Each run has a checksummed bundle with raw job logs, GitHub API records, artifacts and recovered
+console files. The index with download links and SHA-256 values is
+[docs/evidence.md](docs/evidence.md). Where an artifact upload failed, files were rebuilt from
+console output only when they matched the hash the job printed.
+
+## Open questions
+
+- What writes `90-egress-proxy.conf` and the `127.0.0.100` forwarder, and on which runners.
+- Whether a later `DNS=127.0.0.1` drop-in, placed before the hardener starts, restores the agent
+  path on an affected runner.
+- Whether the dropped runner result traffic causes the 13-minute cancellations.
+
+## Reproducing
+
+All workflows are manual (`workflow_dispatch`) with no automatic retries. Read
+[docs/methodology.md](docs/methodology.md) before requesting a dispatch.
+
+- [`dns-path.yml`](.github/workflows/dns-path.yml) collects observations without changing the
+  resolver configuration. Runner placement is random.
+- [`dns-synthetic.yml`](.github/workflows/dns-synthetic.yml) creates the empty `DNS=` drop-in on
+  ordinary runners and compares four arms.
+- [`dns-workaround.yml`](.github/workflows/dns-workaround.yml) tests a conditional pre-hardener
+  override on actual affected runners. It follows the
+  [native canary protocol](docs/native-canary-protocol.md). Source review or a green screened-out
+  job does not establish a working remedy.
+- `dns-counterfactual.yml` must not be run again. Its cleanup code relies on the same wrong
+  assumption and has not been corrected.
+
+[docs/provenance.md](docs/provenance.md) lists the exact commits and the vendored probe source.

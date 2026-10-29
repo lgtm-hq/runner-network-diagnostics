@@ -1,0 +1,2304 @@
+{
+  "asOf": "2026-10-26T12:56:17.925900+00:00",
+  "scope": "Investigation references. A link does not prove every failure has this cause or clear any PR.",
+  "records": [
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203",
+      "number": 1203,
+      "is_pull_request": false,
+      "relation_to_dns1203": "canonical incident"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44",
+      "number": 44,
+      "is_pull_request": true,
+      "relation_to_dns1203": "direct affected consumer PR"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/41",
+      "number": 41,
+      "is_pull_request": true,
+      "relation_to_dns1203": "dependency only"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/43",
+      "number": 43,
+      "is_pull_request": true,
+      "relation_to_dns1203": "dependency / separate network symptom"
+    },
+    {
+      "repo": "actions/runner-images",
+      "url": "https://github.com/actions/runner-images/issues/14925",
+      "number": 14925,
+      "is_pull_request": false,
+      "relation_to_dns1203": "external reference only"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "url": "https://github.com/lgtm-hq/Rustume/issues/1077",
+      "number": 1077,
+      "is_pull_request": false,
+      "relation_to_dns1203": "direct affected main incident"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1184",
+      "number": 1184,
+      "is_pull_request": false,
+      "relation_to_dns1203": "related canary-coordination work"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201",
+      "number": 1201,
+      "is_pull_request": true,
+      "relation_to_dns1203": "affected through exact canary child"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204",
+      "number": 1204,
+      "is_pull_request": true,
+      "relation_to_dns1203": "direct affected PR / canary"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1206",
+      "number": 1206,
+      "is_pull_request": false,
+      "relation_to_dns1203": "separate invalid endpoint issue"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "url": "https://github.com/lgtm-raycast/.github/pull/2",
+      "number": 2,
+      "is_pull_request": true,
+      "relation_to_dns1203": "historically affected, merged"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "url": "https://github.com/lgtm-raycast/brew/pull/8",
+      "number": 8,
+      "is_pull_request": true,
+      "relation_to_dns1203": "historical mitigation PR"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "url": "https://github.com/lgtm-raycast/brew/pull/11",
+      "number": 11,
+      "is_pull_request": true,
+      "relation_to_dns1203": "historically affected, merged"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "url": "https://github.com/lgtm-raycast/brew/pull/12",
+      "number": 12,
+      "is_pull_request": true,
+      "relation_to_dns1203": "merged context only"
+    },
+    {
+      "repo": "step-security/harden-runner",
+      "url": "https://github.com/step-security/harden-runner/issues/679",
+      "number": 679,
+      "is_pull_request": false,
+      "relation_to_dns1203": "external historical reference only"
+    },
+    {
+      "repo": "step-security/harden-runner",
+      "url": "https://github.com/step-security/harden-runner/issues/705",
+      "number": 705,
+      "is_pull_request": false,
+      "relation_to_dns1203": "external reference only"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1178",
+      "number": 1178,
+      "is_pull_request": true,
+      "relation_to_dns1203": "affected through exact canary child"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1195",
+      "number": 1195,
+      "is_pull_request": true,
+      "relation_to_dns1203": "affected through exact canary child"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "url": "https://github.com/lgtm-raycast/brew/pull/13",
+      "number": 13,
+      "is_pull_request": true,
+      "relation_to_dns1203": "direct incident-signature evidence"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "url": "https://github.com/lgtm-raycast/brew/pull/18",
+      "number": 18,
+      "is_pull_request": true,
+      "relation_to_dns1203": "direct incident-signature evidence"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "url": "https://github.com/lgtm-raycast/brew/pull/19",
+      "number": 19,
+      "is_pull_request": true,
+      "relation_to_dns1203": "merely considered / not confirmed affected"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "url": "https://github.com/lgtm-hq/Rustume/pull/1078",
+      "number": 1078,
+      "is_pull_request": true,
+      "relation_to_dns1203": "merged historical reference"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/issues/42",
+      "number": 42,
+      "is_pull_request": false,
+      "relation_to_dns1203": "separate prerequisite"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "number": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310",
+      "relation_to_dns1203": "direct affected / recurrent main incident"
+    },
+    {
+      "repo": "lgtm-hq/hass-turbo-themes",
+      "number": 40,
+      "url": "https://github.com/lgtm-hq/hass-turbo-themes/issues/40",
+      "relation_to_dns1203": "separate failure class / mention only"
+    }
+  ],
+  "comments": [
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6359409468",
+      "id": 6359409468,
+      "created_at": "2026-10-23T07:01:34Z",
+      "updated_at": "2026-10-23T07:01:34Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6359516658",
+      "id": 6359516658,
+      "created_at": "2026-10-23T07:08:43Z",
+      "updated_at": "2026-10-23T07:08:43Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6359913121",
+      "id": 6359913121,
+      "created_at": "2026-10-23T07:34:36Z",
+      "updated_at": "2026-10-23T07:34:36Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6361479804",
+      "id": 6361479804,
+      "created_at": "2026-10-23T09:09:15Z",
+      "updated_at": "2026-10-23T09:09:15Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6362049719",
+      "id": 6362049719,
+      "created_at": "2026-10-23T09:42:21Z",
+      "updated_at": "2026-10-23T09:42:21Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6362691311",
+      "id": 6362691311,
+      "created_at": "2026-10-23T10:19:41Z",
+      "updated_at": "2026-10-23T10:19:41Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6363368561",
+      "id": 6363368561,
+      "created_at": "2026-10-23T11:00:41Z",
+      "updated_at": "2026-10-23T11:00:41Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6364598457",
+      "id": 6364598457,
+      "created_at": "2026-10-23T12:12:56Z",
+      "updated_at": "2026-10-23T12:12:56Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6367401296",
+      "id": 6367401296,
+      "created_at": "2026-10-23T14:36:22Z",
+      "updated_at": "2026-10-23T14:36:22Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6372999054",
+      "id": 6372999054,
+      "created_at": "2026-10-23T19:26:16Z",
+      "updated_at": "2026-10-23T19:37:02Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6396259809",
+      "id": 6396259809,
+      "created_at": "2026-10-25T10:02:12Z",
+      "updated_at": "2026-10-25T10:02:12Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1203,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1203#issuecomment-6403106382",
+      "id": 6403106382,
+      "created_at": "2026-10-25T20:51:52Z",
+      "updated_at": "2026-10-25T20:51:52Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6394905572",
+      "id": 6394905572,
+      "created_at": "2026-10-25T07:31:00Z",
+      "updated_at": "2026-10-25T08:06:04Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6394906409",
+      "id": 6394906409,
+      "created_at": "2026-10-25T07:31:06Z",
+      "updated_at": "2026-10-25T07:31:06Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6394915194",
+      "id": 6394915194,
+      "created_at": "2026-10-25T07:32:11Z",
+      "updated_at": "2026-10-25T08:06:47Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6394926338",
+      "id": 6394926338,
+      "created_at": "2026-10-25T07:33:30Z",
+      "updated_at": "2026-10-25T09:24:07Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6394930172",
+      "id": 6394930172,
+      "created_at": "2026-10-25T07:33:58Z",
+      "updated_at": "2026-10-25T08:08:58Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6394942027",
+      "id": 6394942027,
+      "created_at": "2026-10-25T07:35:24Z",
+      "updated_at": "2026-10-25T08:10:05Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6395199557",
+      "id": 6395199557,
+      "created_at": "2026-10-25T08:05:29Z",
+      "updated_at": "2026-10-25T08:05:29Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6395284680",
+      "id": 6395284680,
+      "created_at": "2026-10-25T08:14:54Z",
+      "updated_at": "2026-10-25T08:14:54Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 44,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/44#issuecomment-6396241839",
+      "id": 6396241839,
+      "created_at": "2026-10-25T10:00:19Z",
+      "updated_at": "2026-10-25T10:00:19Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "issue": 43,
+      "url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/pull/43#issuecomment-6340035527",
+      "id": 6340035527,
+      "created_at": "2026-10-22T11:50:52Z",
+      "updated_at": "2026-10-22T11:50:52Z"
+    },
+    {
+      "repo": "actions/runner-images",
+      "issue": 14925,
+      "url": "https://github.com/actions/runner-images/issues/14925#issuecomment-6145225316",
+      "id": 6145225316,
+      "created_at": "2026-10-13T12:10:20Z",
+      "updated_at": "2026-10-13T12:10:20Z"
+    },
+    {
+      "repo": "actions/runner-images",
+      "issue": 14925,
+      "url": "https://github.com/actions/runner-images/issues/14925#issuecomment-6149601739",
+      "id": 6149601739,
+      "created_at": "2026-10-13T15:55:30Z",
+      "updated_at": "2026-10-13T15:55:30Z"
+    },
+    {
+      "repo": "actions/runner-images",
+      "issue": 14925,
+      "url": "https://github.com/actions/runner-images/issues/14925#issuecomment-6157116400",
+      "id": 6157116400,
+      "created_at": "2026-10-13T23:08:29Z",
+      "updated_at": "2026-10-13T23:08:29Z"
+    },
+    {
+      "repo": "actions/runner-images",
+      "issue": 14925,
+      "url": "https://github.com/actions/runner-images/issues/14925#issuecomment-6181980173",
+      "id": 6181980173,
+      "created_at": "2026-10-15T01:04:28Z",
+      "updated_at": "2026-10-15T01:04:28Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "issue": 1077,
+      "url": "https://github.com/lgtm-hq/Rustume/issues/1077#issuecomment-6362349133",
+      "id": 6362349133,
+      "created_at": "2026-10-23T09:59:53Z",
+      "updated_at": "2026-10-23T09:59:53Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "issue": 1077,
+      "url": "https://github.com/lgtm-hq/Rustume/issues/1077#issuecomment-6364611183",
+      "id": 6364611183,
+      "created_at": "2026-10-23T12:13:40Z",
+      "updated_at": "2026-10-23T12:13:40Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "issue": 1077,
+      "url": "https://github.com/lgtm-hq/Rustume/issues/1077#issuecomment-6387925902",
+      "id": 6387925902,
+      "created_at": "2026-10-24T18:27:41Z",
+      "updated_at": "2026-10-24T18:27:41Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "issue": 1077,
+      "url": "https://github.com/lgtm-hq/Rustume/issues/1077#issuecomment-6388061367",
+      "id": 6388061367,
+      "created_at": "2026-10-24T18:40:57Z",
+      "updated_at": "2026-10-24T18:40:57Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1184,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1184#issuecomment-6290236553",
+      "id": 6290236553,
+      "created_at": "2026-10-20T11:53:27Z",
+      "updated_at": "2026-10-20T11:53:27Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6354129995",
+      "id": 6354129995,
+      "created_at": "2026-10-23T00:08:09Z",
+      "updated_at": "2026-10-23T00:08:09Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6354435146",
+      "id": 6354435146,
+      "created_at": "2026-10-23T00:30:23Z",
+      "updated_at": "2026-10-23T00:30:23Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6354533947",
+      "id": 6354533947,
+      "created_at": "2026-10-23T00:37:51Z",
+      "updated_at": "2026-10-23T00:37:51Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6354769936",
+      "id": 6354769936,
+      "created_at": "2026-10-23T00:56:00Z",
+      "updated_at": "2026-10-23T00:56:00Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6354909524",
+      "id": 6354909524,
+      "created_at": "2026-10-23T01:07:01Z",
+      "updated_at": "2026-10-23T01:07:01Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6355474914",
+      "id": 6355474914,
+      "created_at": "2026-10-23T01:51:54Z",
+      "updated_at": "2026-10-23T01:51:54Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6355578413",
+      "id": 6355578413,
+      "created_at": "2026-10-23T02:00:21Z",
+      "updated_at": "2026-10-23T02:00:21Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6355939640",
+      "id": 6355939640,
+      "created_at": "2026-10-23T02:28:57Z",
+      "updated_at": "2026-10-23T02:28:57Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1201,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1201#issuecomment-6387411492",
+      "id": 6387411492,
+      "created_at": "2026-10-24T17:38:09Z",
+      "updated_at": "2026-10-24T17:38:09Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6361485631",
+      "id": 6361485631,
+      "created_at": "2026-10-23T09:09:35Z",
+      "updated_at": "2026-10-23T09:09:35Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6361576155",
+      "id": 6361576155,
+      "created_at": "2026-10-23T09:14:43Z",
+      "updated_at": "2026-10-23T09:14:43Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6362029025",
+      "id": 6362029025,
+      "created_at": "2026-10-23T09:41:11Z",
+      "updated_at": "2026-10-23T09:41:11Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6362156851",
+      "id": 6362156851,
+      "created_at": "2026-10-23T09:48:36Z",
+      "updated_at": "2026-10-23T09:48:36Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6362397079",
+      "id": 6362397079,
+      "created_at": "2026-10-23T10:02:39Z",
+      "updated_at": "2026-10-23T10:02:39Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6362577478",
+      "id": 6362577478,
+      "created_at": "2026-10-23T10:13:06Z",
+      "updated_at": "2026-10-23T10:13:06Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6362702991",
+      "id": 6362702991,
+      "created_at": "2026-10-23T10:20:22Z",
+      "updated_at": "2026-10-23T10:20:22Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6362860064",
+      "id": 6362860064,
+      "created_at": "2026-10-23T10:29:47Z",
+      "updated_at": "2026-10-23T10:29:47Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6363072633",
+      "id": 6363072633,
+      "created_at": "2026-10-23T10:42:43Z",
+      "updated_at": "2026-10-23T10:42:43Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6363286718",
+      "id": 6363286718,
+      "created_at": "2026-10-23T10:55:41Z",
+      "updated_at": "2026-10-23T10:55:41Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6363559580",
+      "id": 6363559580,
+      "created_at": "2026-10-23T11:11:41Z",
+      "updated_at": "2026-10-23T11:11:41Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6363821137",
+      "id": 6363821137,
+      "created_at": "2026-10-23T11:27:23Z",
+      "updated_at": "2026-10-23T11:27:23Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6363926180",
+      "id": 6363926180,
+      "created_at": "2026-10-23T11:33:38Z",
+      "updated_at": "2026-10-23T11:33:38Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6364041076",
+      "id": 6364041076,
+      "created_at": "2026-10-23T11:40:33Z",
+      "updated_at": "2026-10-23T11:40:33Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6364138195",
+      "id": 6364138195,
+      "created_at": "2026-10-23T11:46:22Z",
+      "updated_at": "2026-10-23T11:46:22Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6364195713",
+      "id": 6364195713,
+      "created_at": "2026-10-23T11:49:52Z",
+      "updated_at": "2026-10-23T11:49:52Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6364524719",
+      "id": 6364524719,
+      "created_at": "2026-10-23T12:08:40Z",
+      "updated_at": "2026-10-23T12:08:40Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1204,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/pull/1204#issuecomment-6364649821",
+      "id": 6364649821,
+      "created_at": "2026-10-23T12:15:50Z",
+      "updated_at": "2026-10-23T12:15:50Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "issue": 1206,
+      "url": "https://github.com/lgtm-hq/lgtm-ci/issues/1206#issuecomment-6399884021",
+      "id": 6399884021,
+      "created_at": "2026-10-25T16:02:08Z",
+      "updated_at": "2026-10-25T16:02:08Z"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "issue": 2,
+      "url": "https://github.com/lgtm-raycast/.github/pull/2#issuecomment-6361558997",
+      "id": 6361558997,
+      "created_at": "2026-10-23T09:13:45Z",
+      "updated_at": "2026-10-23T09:53:53Z"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "issue": 2,
+      "url": "https://github.com/lgtm-raycast/.github/pull/2#issuecomment-6362652530",
+      "id": 6362652530,
+      "created_at": "2026-10-23T10:17:22Z",
+      "updated_at": "2026-10-23T10:17:22Z"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "issue": 2,
+      "url": "https://github.com/lgtm-raycast/.github/pull/2#issuecomment-6363045539",
+      "id": 6363045539,
+      "created_at": "2026-10-23T10:41:03Z",
+      "updated_at": "2026-10-23T10:41:03Z"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "issue": 2,
+      "url": "https://github.com/lgtm-raycast/.github/pull/2#issuecomment-6363361224",
+      "id": 6363361224,
+      "created_at": "2026-10-23T11:00:18Z",
+      "updated_at": "2026-10-23T11:00:18Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "issue": 8,
+      "url": "https://github.com/lgtm-raycast/brew/pull/8#issuecomment-6359488970",
+      "id": 6359488970,
+      "created_at": "2026-10-23T07:06:53Z",
+      "updated_at": "2026-10-23T07:11:12Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "issue": 8,
+      "url": "https://github.com/lgtm-raycast/brew/pull/8#issuecomment-6359516666",
+      "id": 6359516666,
+      "created_at": "2026-10-23T07:08:43Z",
+      "updated_at": "2026-10-23T07:08:43Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "issue": 11,
+      "url": "https://github.com/lgtm-raycast/brew/pull/11#issuecomment-6361831163",
+      "id": 6361831163,
+      "created_at": "2026-10-23T09:29:39Z",
+      "updated_at": "2026-10-23T09:29:39Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "issue": 11,
+      "url": "https://github.com/lgtm-raycast/brew/pull/11#issuecomment-6362432436",
+      "id": 6362432436,
+      "created_at": "2026-10-23T10:04:40Z",
+      "updated_at": "2026-10-23T10:04:40Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "issue": 11,
+      "url": "https://github.com/lgtm-raycast/brew/pull/11#issuecomment-6362744188",
+      "id": 6362744188,
+      "created_at": "2026-10-23T10:22:51Z",
+      "updated_at": "2026-10-23T10:22:51Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "issue": 11,
+      "url": "https://github.com/lgtm-raycast/brew/pull/11#issuecomment-6363105834",
+      "id": 6363105834,
+      "created_at": "2026-10-23T10:44:42Z",
+      "updated_at": "2026-10-23T10:44:42Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "issue": 11,
+      "url": "https://github.com/lgtm-raycast/brew/pull/11#issuecomment-6363125594",
+      "id": 6363125594,
+      "created_at": "2026-10-23T10:45:53Z",
+      "updated_at": "2026-10-23T10:45:53Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "issue": 11,
+      "url": "https://github.com/lgtm-raycast/brew/pull/11#issuecomment-6363958426",
+      "id": 6363958426,
+      "created_at": "2026-10-23T11:35:35Z",
+      "updated_at": "2026-10-23T11:35:35Z"
+    },
+    {
+      "repo": "step-security/harden-runner",
+      "issue": 705,
+      "url": "https://github.com/step-security/harden-runner/issues/705#issuecomment-6145225735",
+      "id": 6145225735,
+      "created_at": "2026-10-13T12:10:21Z",
+      "updated_at": "2026-10-13T12:10:21Z"
+    },
+    {
+      "repo": "step-security/harden-runner",
+      "issue": 705,
+      "url": "https://github.com/step-security/harden-runner/issues/705#issuecomment-6149659024",
+      "id": 6149659024,
+      "created_at": "2026-10-13T15:58:26Z",
+      "updated_at": "2026-10-13T16:08:12Z"
+    },
+    {
+      "repo": "step-security/harden-runner",
+      "issue": 705,
+      "url": "https://github.com/step-security/harden-runner/issues/705#issuecomment-6157104914",
+      "id": 6157104914,
+      "created_at": "2026-10-13T23:07:38Z",
+      "updated_at": "2026-10-13T23:07:38Z"
+    },
+    {
+      "repo": "step-security/harden-runner",
+      "issue": 705,
+      "url": "https://github.com/step-security/harden-runner/issues/705#issuecomment-6382014067",
+      "id": 6382014067,
+      "created_at": "2026-10-24T08:29:56Z",
+      "updated_at": "2026-10-24T08:29:56Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6362218752",
+      "id": 6362218752,
+      "created_at": "2026-10-23T09:52:14Z",
+      "updated_at": "2026-10-23T09:52:14Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6367378194",
+      "id": 6367378194,
+      "created_at": "2026-10-23T14:35:14Z",
+      "updated_at": "2026-10-23T14:35:14Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6368010907",
+      "id": 6368010907,
+      "created_at": "2026-10-23T15:06:32Z",
+      "updated_at": "2026-10-23T15:06:32Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6381787225",
+      "id": 6381787225,
+      "created_at": "2026-10-24T08:06:04Z",
+      "updated_at": "2026-10-24T08:06:04Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6381870532",
+      "id": 6381870532,
+      "created_at": "2026-10-24T08:14:22Z",
+      "updated_at": "2026-10-24T08:14:22Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6382119788",
+      "id": 6382119788,
+      "created_at": "2026-10-24T08:41:52Z",
+      "updated_at": "2026-10-24T08:41:52Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6382187035",
+      "id": 6382187035,
+      "created_at": "2026-10-24T08:49:25Z",
+      "updated_at": "2026-10-24T08:49:25Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6387842761",
+      "id": 6387842761,
+      "created_at": "2026-10-24T18:19:37Z",
+      "updated_at": "2026-10-24T18:19:37Z"
+    },
+    {
+      "repo": "lgtm-hq/holy-grail",
+      "issue": 310,
+      "url": "https://github.com/lgtm-hq/holy-grail/issues/310#issuecomment-6388030305",
+      "id": 6388030305,
+      "created_at": "2026-10-24T18:37:59Z",
+      "updated_at": "2026-10-24T18:37:59Z"
+    },
+    {
+      "repo": "lgtm-hq/hass-turbo-themes",
+      "issue": 40,
+      "url": "https://github.com/lgtm-hq/hass-turbo-themes/issues/40#issuecomment-6398322382",
+      "id": 6398322382,
+      "created_at": "2026-10-25T13:36:17Z",
+      "updated_at": "2026-10-25T13:36:17Z"
+    },
+    {
+      "repo": "lgtm-hq/hass-turbo-themes",
+      "issue": 40,
+      "url": "https://github.com/lgtm-hq/hass-turbo-themes/issues/40#issuecomment-6398858211",
+      "id": 6398858211,
+      "created_at": "2026-10-25T14:26:33Z",
+      "updated_at": "2026-10-25T14:26:33Z"
+    }
+  ],
+  "builds": [
+    {
+      "id": 39767572074,
+      "name": "fixture-results-contract",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39767572074",
+      "head_sha": "7bd39d2b36f44b88c553533cf9a29f2d14c6a784",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-22T11:02:20Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39887236513,
+      "name": "fixture-docker-publish",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39887236513",
+      "head_sha": "9e6cca2134dc2d5242e8a231025caccf1a4cf213",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T02:01:01Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39887273593,
+      "name": "fixture-playwright",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39887273593",
+      "head_sha": "9e6cca2134dc2d5242e8a231025caccf1a4cf213",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T02:01:24Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39887284394,
+      "name": "fixture-readonly-node",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39887284394",
+      "head_sha": "9e6cca2134dc2d5242e8a231025caccf1a4cf213",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T02:01:31Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39887294136,
+      "name": "fixture-results-contract",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39887294136",
+      "head_sha": "9e6cca2134dc2d5242e8a231025caccf1a4cf213",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T02:01:37Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39929989463,
+      "name": "fixture-readonly-shell",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39929989463",
+      "head_sha": "989512f51d89403ba9ae45507f526cac3cb16ecb",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:10:54Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39933656042,
+      "name": "fixture-docker-facade-validate",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39933656042",
+      "head_sha": "311ec3ecc75fa306032bedd01ab70569e5a1625b",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:41:12Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39941155584,
+      "name": "fixture-results-contract",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39941155584",
+      "head_sha": "97a6d239c18030ac9d22b5f8b73f4cd81fc56a73",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T10:43:53Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39944412971,
+      "name": "fixture-app-token-probe",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39944412971",
+      "head_sha": "4e5760d6f1f3b9f6c838a04475b4bf6b62596984",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:12:04Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39944426297,
+      "name": "fixture-docker-orchestrator",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39944426297",
+      "head_sha": "4e5760d6f1f3b9f6c838a04475b4bf6b62596984",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:12:11Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39944429897,
+      "name": "fixture-docker-publish",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39944429897",
+      "head_sha": "4e5760d6f1f3b9f6c838a04475b4bf6b62596984",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:12:12Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39944439098,
+      "name": "fixture-node-bun",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39944439098",
+      "head_sha": "4e5760d6f1f3b9f6c838a04475b4bf6b62596984",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:12:17Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39944483214,
+      "name": "fixture-readonly-node",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39944483214",
+      "head_sha": "4e5760d6f1f3b9f6c838a04475b4bf6b62596984",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:12:39Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39948489947,
+      "name": "fixture-app-token-probe",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39948489947",
+      "head_sha": "b2634e00b7bba5c96c5a283a23a49941a001d51e",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:46:50Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39948574818,
+      "name": "fixture-results-contract",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39948574818",
+      "head_sha": "b2634e00b7bba5c96c5a283a23a49941a001d51e",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:47:33Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39948583320,
+      "name": "fixture-rust-release-build",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39948583320",
+      "head_sha": "b2634e00b7bba5c96c5a283a23a49941a001d51e",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:47:38Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39948601936,
+      "name": "fixture-vuln-suppression",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39948601936",
+      "head_sha": "b2634e00b7bba5c96c5a283a23a49941a001d51e",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:47:47Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40175270477,
+      "name": "fixture-actions-direct",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40175270477",
+      "head_sha": "9c00402909f7de317d5350aff2b9ddfb18bf51bb",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T08:05:35Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40175273374,
+      "name": "fixture-node-bun",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40175273374",
+      "head_sha": "9c00402909f7de317d5350aff2b9ddfb18bf51bb",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-25T08:05:38Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40175273490,
+      "name": "fixture-results-contract",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40175273490",
+      "head_sha": "9c00402909f7de317d5350aff2b9ddfb18bf51bb",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 2,
+      "created_at": "2026-10-25T08:05:38Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40200060849,
+      "name": "fixture-playwright-negative-probe",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40200060849",
+      "head_sha": "df3849e777a5958b9938ed56f157e8533ee37e07",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T13:58:34Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40231423680,
+      "name": "DNS diagnostic \u2014 diagnostic/1203-dns-enforcement",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40231423680",
+      "head_sha": "63dbed3d89e134a305b1c9cde860f5a07a55918c",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T20:34:41Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40232166028,
+      "name": "DNS diagnostic \u2014 diagnostic/1203-dns-enforcement",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40232166028",
+      "head_sha": "93eed7ccd8f2e5e9e2b5c0f6a47b08e45e2ee017",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T20:44:13Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40232289237,
+      "name": "DNS diagnostic \u2014 diagnostic/1203-dns-enforcement",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40232289237",
+      "head_sha": "93eed7ccd8f2e5e9e2b5c0f6a47b08e45e2ee017",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T20:45:47Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40232419966,
+      "name": "DNS diagnostic \u2014 diagnostic/1203-dns-enforcement",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40232419966",
+      "head_sha": "93eed7ccd8f2e5e9e2b5c0f6a47b08e45e2ee017",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T20:47:30Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40238317870,
+      "name": "DNS matched-pin sample \u2014 diagnostic/1203-dns-enforcement",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40238317870",
+      "head_sha": "699c88a38603fcd93cd32258283cb69d0288b8bc",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T22:02:44Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39931805112,
+      "name": "Quality - Ops Boundary Guard",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931805112",
+      "head_sha": "cd50fcfad814d6e4dbe4e6969d03469046549a57",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T09:25:53Z",
+      "repo": "lgtm-hq/Rustume"
+    },
+    {
+      "id": 39931805409,
+      "name": "Release - Automated PR Creation",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931805409",
+      "head_sha": "cd50fcfad814d6e4dbe4e6969d03469046549a57",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:25:53Z",
+      "repo": "lgtm-hq/Rustume"
+    },
+    {
+      "id": 39931805590,
+      "name": "Security - Dependency Vulnerability Scan",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931805590",
+      "head_sha": "cd50fcfad814d6e4dbe4e6969d03469046549a57",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:25:53Z",
+      "repo": "lgtm-hq/Rustume"
+    },
+    {
+      "id": 39931806439,
+      "name": "Build - Docker Image & Registry",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931806439",
+      "head_sha": "cd50fcfad814d6e4dbe4e6969d03469046549a57",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T09:25:54Z",
+      "repo": "lgtm-hq/Rustume"
+    },
+    {
+      "id": 40120173841,
+      "name": "Build - Docker Image & Registry",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/40120173841",
+      "head_sha": "117bb107757b538e55ee26f8217af1329e77feb5",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 2,
+      "created_at": "2026-10-24T18:19:32Z",
+      "repo": "lgtm-hq/Rustume"
+    },
+    {
+      "id": 39876054740,
+      "name": "External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39876054740",
+      "head_sha": "264d1bd767b423b956e88f5ff16604280f1526b1",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T00:06:19Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39876054829,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39876054829",
+      "head_sha": "264d1bd767b423b956e88f5ff16604280f1526b1",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T00:06:19Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39884439449,
+      "name": "External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39884439449",
+      "head_sha": "eef7d05efc133f8256a9c09d25938a3f88d633e2",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T01:31:05Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39884439691,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39884439691",
+      "head_sha": "eef7d05efc133f8256a9c09d25938a3f88d633e2",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T01:31:05Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39924851747,
+      "name": "External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39924851747",
+      "head_sha": "7654f2ad5cd67457bef43659e3bed820aeec4fe8",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T08:28:12Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39924852008,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39924852008",
+      "head_sha": "7654f2ad5cd67457bef43659e3bed820aeec4fe8",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 4,
+      "created_at": "2026-10-23T08:28:12Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39933533565,
+      "name": "External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39933533565",
+      "head_sha": "e8247fd2ce48e940e993d56f681a088024c09bfe",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:40:11Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39933534589,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39933534589",
+      "head_sha": "e8247fd2ce48e940e993d56f681a088024c09bfe",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T09:40:12Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39937586434,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39937586434",
+      "head_sha": "cf33865b88b039b194c72270a17928e7f9dbf7ef",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T10:13:40Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39940967022,
+      "name": "External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39940967022",
+      "head_sha": "30b121ab3d255db4934efa0ddf2b6c38deb74045",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T10:42:15Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39944325495,
+      "name": "Quality Check - Action Pinning Validation",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39944325495",
+      "head_sha": "e9c52a285ea2ed1eaed89684333802ac87cbbc3a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:11:19Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39944325648,
+      "name": "External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39944325648",
+      "head_sha": "e9c52a285ea2ed1eaed89684333802ac87cbbc3a",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:11:19Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39944325755,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39944325755",
+      "head_sha": "e9c52a285ea2ed1eaed89684333802ac87cbbc3a",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:11:19Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39948389507,
+      "name": "External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39948389507",
+      "head_sha": "82b927b178c801a4979865a5652119f6cb745735",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:45:59Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39948389727,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39948389727",
+      "head_sha": "82b927b178c801a4979865a5652119f6cb745735",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T11:45:59Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 40294837589,
+      "name": "DNS affected-setup sample \u2014 main",
+      "html_url": "https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40294837589",
+      "head_sha": "b5db7b0d419c14163d9795728003f01c211dd1d6",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-26T08:48:26Z",
+      "repo": "lgtm-hq/runner-network-diagnostics"
+    },
+    {
+      "id": 40304555915,
+      "name": "DNS counterfactual draft \u2014 main",
+      "html_url": "https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40304555915",
+      "head_sha": "b59c1c7f355a01450f273f2c4c4b45b96fee05d2",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-26T10:04:46Z",
+      "repo": "lgtm-hq/runner-network-diagnostics"
+    },
+    {
+      "id": 40313241012,
+      "name": "Synthetic DNS conflict \u2014 main",
+      "html_url": "https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40313241012",
+      "head_sha": "c3040da0967e2b726a6d5020377e3095f3b27550",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-26T11:11:49Z",
+      "repo": "lgtm-hq/runner-network-diagnostics"
+    },
+    {
+      "id": 39933918916,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-raycast/.github/actions/runs/39933918916",
+      "head_sha": "126b0ba9334d55b1724fd1ac3b6d3e87223cb743",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 3,
+      "created_at": "2026-10-23T09:43:22Z",
+      "repo": "lgtm-raycast/.github"
+    },
+    {
+      "id": 39914689136,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39914689136",
+      "head_sha": "6bb6eab05077865cb3826d6171a411ac98234aca",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T06:57:25Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 39915829134,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39915829134",
+      "head_sha": "2434e6699a63a5dcc3d56594807d78579b99a639",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T07:08:02Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 39918058717,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39918058717",
+      "head_sha": "f530426c19e9bc93903a8bef466b591fdca75f70",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T07:29:09Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 40012082013,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/40012082013",
+      "head_sha": "a683e9d2714fcbc10f5a7a0dc4e752d7890de5ad",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T19:31:28Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 40324625326,
+      "name": "Synthetic DNS conflict \u2014 main",
+      "html_url": "https://github.com/lgtm-hq/runner-network-diagnostics/actions/runs/40324625326",
+      "head_sha": "8bb9643914ce2799cdd44a39d24e6f21e371fd28",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-26T12:42:42Z",
+      "repo": "lgtm-hq/runner-network-diagnostics"
+    },
+    {
+      "id": 40079947265,
+      "name": "fixture-results-contract",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40079947265",
+      "head_sha": "a825b19b3f031f54e895d2691a279953436e76ed",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-24T08:55:51Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40175273342,
+      "name": "CI",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40175273342",
+      "head_sha": "9c00402909f7de317d5350aff2b9ddfb18bf51bb",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T08:05:38Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40175273416,
+      "name": "fixture-coverage-lcov",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40175273416",
+      "head_sha": "9c00402909f7de317d5350aff2b9ddfb18bf51bb",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T08:05:38Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 40200042038,
+      "name": "fixture-egress",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40200042038",
+      "head_sha": "df3849e777a5958b9938ed56f157e8533ee37e07",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T13:58:17Z",
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture"
+    },
+    {
+      "id": 39799901588,
+      "name": "\ud83c\udfa8 Themes - Regen Drift Check",
+      "html_url": "https://github.com/lgtm-hq/hass-turbo-themes/actions/runs/39799901588",
+      "head_sha": "f70bfa422ae49eef3380d46c0048ee61c1b09afa",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-22T14:54:53Z",
+      "repo": "lgtm-hq/hass-turbo-themes"
+    },
+    {
+      "id": 40194218837,
+      "name": "\ud83c\udfa8 Themes - Regen Drift Check",
+      "html_url": "https://github.com/lgtm-hq/hass-turbo-themes/actions/runs/40194218837",
+      "head_sha": "21c60e929b6a70d02d55fc4a2a3d44e4612b1a4f",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-25T12:41:19Z",
+      "repo": "lgtm-hq/hass-turbo-themes"
+    },
+    {
+      "id": 39931827528,
+      "name": "Quality E2E",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/39931827528",
+      "head_sha": "61d0e2f8b4cdac71edd314cb705923970dde0e5b",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:26:04Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 39931827578,
+      "name": "Security - Dependency Vulnerability Scan",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/39931827578",
+      "head_sha": "61d0e2f8b4cdac71edd314cb705923970dde0e5b",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:26:04Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 39931827663,
+      "name": "Deploy to GitHub Pages",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/39931827663",
+      "head_sha": "61d0e2f8b4cdac71edd314cb705923970dde0e5b",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:26:04Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 39931828046,
+      "name": "Release Version PR",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/39931828046",
+      "head_sha": "61d0e2f8b4cdac71edd314cb705923970dde0e5b",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:26:04Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 39931828107,
+      "name": "CodeQL",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/39931828107",
+      "head_sha": "61d0e2f8b4cdac71edd314cb705923970dde0e5b",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:26:04Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 39931828436,
+      "name": "Quality CI",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/39931828436",
+      "head_sha": "61d0e2f8b4cdac71edd314cb705923970dde0e5b",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T09:26:04Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 39960551027,
+      "name": "Quality CI",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/39960551027",
+      "head_sha": "9335be73b55dbf329fee5a0e51cf44176471c00c",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T13:21:43Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 40076130304,
+      "name": "Release Version PR",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/40076130304",
+      "head_sha": "34f708893e08182aba55f078e32ab62da953b70e",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-24T07:57:04Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 40078757089,
+      "name": "Quality CI",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/40078757089",
+      "head_sha": "0ae6119a34bd80dd47c31b4cc7bc513a3508f180",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-24T08:37:22Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 40119283490,
+      "name": "Quality CI",
+      "html_url": "https://github.com/lgtm-hq/holy-grail/actions/runs/40119283490",
+      "head_sha": "79b0e8f894dc49983f4a1fcb60ac90113e1744b1",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 2,
+      "created_at": "2026-10-24T18:07:52Z",
+      "repo": "lgtm-hq/holy-grail"
+    },
+    {
+      "id": 39676227030,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39676227030",
+      "head_sha": "0d0dcaf8e1d406a06ef5d27aae4ca2eaebf3da92",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 3,
+      "created_at": "2026-10-21T21:07:46Z",
+      "repo": "lgtm-hq/lgtm-ci"
+    },
+    {
+      "id": 39928638206,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39928638206",
+      "head_sha": "2046c0dfaddf7f403045837ba4ab3e68af6a4f70",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T08:59:54Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 39932240856,
+      "name": "All Checks Gate",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39932240856",
+      "head_sha": "87698be215c5ff3a75897d4a9c949537c7e44fd1",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-23T09:29:31Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 39938631436,
+      "name": "PR metadata",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39938631436",
+      "head_sha": "1532bc37c85fd3bf559945fc4661f1f8c1ec6b5d",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T10:22:27Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 39938632972,
+      "name": "All Checks Gate",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39938632972",
+      "head_sha": "1532bc37c85fd3bf559945fc4661f1f8c1ec6b5d",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 2,
+      "created_at": "2026-10-23T10:22:27Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 40104228400,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/40104228400",
+      "head_sha": "18560f55ad4c1ea9011d7e47b9581567ba541bc6",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-24T14:49:41Z",
+      "repo": "lgtm-raycast/brew"
+    },
+    {
+      "id": 40104252882,
+      "name": "CI",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/40104252882",
+      "head_sha": "b65cf0d5fddbf7fd524e5d4ab611804d36c09854",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "run_attempt": 1,
+      "created_at": "2026-10-24T14:50:00Z",
+      "repo": "lgtm-raycast/brew"
+    }
+  ],
+  "jobs": [
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120198460585,
+      "run_id": 39887284394,
+      "run_attempt": 1,
+      "name": "node / Node Tests (read-only)",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39887284394/job/120198460585",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T02:02:25Z",
+      "completed_at": "2026-10-23T02:51:26Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120198569979,
+      "run_id": 39887273593,
+      "run_attempt": 1,
+      "name": "Verify HTML report artifact",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39887273593/job/120198569979",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T02:04:08Z",
+      "completed_at": "2026-10-23T02:14:08Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120198808868,
+      "run_id": 39887294136,
+      "run_attempt": 1,
+      "name": "node / Node Tests (contract)",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39887294136/job/120198808868",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T02:05:09Z",
+      "completed_at": "2026-10-23T02:54:10Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120204577746,
+      "run_id": 39887236513,
+      "run_attempt": 1,
+      "name": "publish / Publish / Docker verify per platform (linux/arm64, linux-arm64, ubuntu-24.04-arm, false)",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39887236513/job/120204577746",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T02:22:23Z",
+      "completed_at": "2026-10-23T03:11:24Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120335592964,
+      "run_id": 39929989463,
+      "run_attempt": 1,
+      "name": "shell / Shell Tests (read-only)",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39929989463/job/120335592964",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T09:11:39Z",
+      "completed_at": "2026-10-23T10:00:40Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120348283388,
+      "run_id": 39933656042,
+      "run_attempt": 1,
+      "name": "facade / Validate / Validation Summary",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39933656042/job/120348283388",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T09:43:39Z",
+      "completed_at": "2026-10-23T10:32:40Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120375506611,
+      "run_id": 39941155584,
+      "run_attempt": 1,
+      "name": "Validate results.v1 artifacts",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39941155584/job/120375506611",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T10:51:27Z",
+      "completed_at": "2026-10-23T11:06:27Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120397183349,
+      "run_id": 39948574818,
+      "run_attempt": 1,
+      "name": "node / Prepare Node Matrix",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39948574818/job/120397183349",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T11:49:00Z",
+      "completed_at": "2026-10-23T12:04:00Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 120397210880,
+      "run_id": 39948583320,
+      "run_attempt": 1,
+      "name": "build / Rust binaries (x86_64-pc-windows-msvc)",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/39948583320/job/120397210880",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T11:49:18Z",
+      "completed_at": "2026-10-23T12:44:18Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 121130162768,
+      "run_id": 40175273490,
+      "run_attempt": 2,
+      "name": "node / Aggregate Node.js Results",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40175273490/job/121130162768",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-25T09:23:31Z",
+      "completed_at": "2026-10-25T09:38:31Z"
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "id": 121189156391,
+      "run_id": 40200060849,
+      "run_attempt": 1,
+      "name": "probe / Assert playwright-negative.yml fails as designed",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/actions/runs/40200060849/job/121189156391",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-25T13:58:41Z",
+      "completed_at": "2026-10-25T14:25:42Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "id": 120346867597,
+      "run_id": 39931806439,
+      "run_attempt": 2,
+      "name": "\ud83d\udc33 Docker Build & Publish / Docker multi-platform / Publish / Docker build per platform (linux/arm64, ubuntu-24.04-arm, linux-arm64, false)",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931806439/job/120346867597",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T09:38:57Z",
+      "completed_at": "2026-10-23T09:45:34Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "id": 120346867614,
+      "run_id": 39931806439,
+      "run_attempt": 2,
+      "name": "\ud83d\udc33 Docker Build & Publish / Docker multi-platform / Publish / Docker build per platform (linux/amd64, ubuntu-24.04, linux-amd64, false)",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931806439/job/120346867614",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T09:38:54Z",
+      "completed_at": "2026-10-23T09:48:32Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "id": 120350757100,
+      "run_id": 39931806439,
+      "run_attempt": 2,
+      "name": "\ud83d\udc33 Docker Build & Publish / Docker multi-platform / Publish / Docker verify per platform (linux/amd64, ubuntu-24.04, linux-amd64, false)",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931806439/job/120350757100",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T09:48:35Z",
+      "completed_at": "2026-10-23T09:49:05Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "id": 120350757251,
+      "run_id": 39931806439,
+      "run_attempt": 2,
+      "name": "\ud83d\udc33 Docker Build & Publish / Docker multi-platform / Publish / Docker verify per platform (linux/arm64, ubuntu-24.04-arm, linux-arm64, false)",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931806439/job/120350757251",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T09:48:37Z",
+      "completed_at": "2026-10-23T09:48:59Z"
+    },
+    {
+      "repo": "lgtm-hq/Rustume",
+      "id": 120350979141,
+      "run_id": 39931806439,
+      "run_attempt": 2,
+      "name": "\ud83d\udc33 Docker Build & Publish / Docker multi-platform / Publish / Merge Manifests",
+      "html_url": "https://github.com/lgtm-hq/Rustume/actions/runs/39931806439/job/120350979141",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T09:49:08Z",
+      "completed_at": "2026-10-23T09:58:08Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120161805002,
+      "run_id": 39876054740,
+      "run_attempt": 1,
+      "name": "\ud83d\udc24 External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39876054740/job/120161805002",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T00:06:22Z",
+      "completed_at": "2026-10-23T00:33:31Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120170249751,
+      "run_id": 39876054829,
+      "run_attempt": 2,
+      "name": "quality / \ud83d\udee0\ufe0f Lintro Code Quality",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39876054829/job/120170249751",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T00:31:21Z",
+      "completed_at": "2026-10-23T00:36:06Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120347407374,
+      "run_id": 39933534589,
+      "run_attempt": 1,
+      "name": "quality / \ud83d\udee0\ufe0f Lintro Code Quality",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39933534589/job/120347407374",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T09:40:14Z",
+      "completed_at": "2026-10-23T09:40:53Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120360822309,
+      "run_id": 39937586434,
+      "run_attempt": 1,
+      "name": "quality / \ud83d\udee0\ufe0f Lintro Code Quality",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39937586434/job/120360822309",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T10:13:43Z",
+      "completed_at": "2026-10-23T10:17:01Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120360822424,
+      "run_id": 39937586434,
+      "run_attempt": 1,
+      "name": "shell-tests / Coverage shard matrix",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39937586434/job/120360822424",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T10:13:43Z",
+      "completed_at": "2026-10-23T10:28:43Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120383132183,
+      "run_id": 39944325495,
+      "run_attempt": 1,
+      "name": "validate / \ud83d\udccc Validate Action Pinning",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39944325495/job/120383132183",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T11:11:22Z",
+      "completed_at": "2026-10-23T11:26:22Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120383132253,
+      "run_id": 39944325648,
+      "run_attempt": 1,
+      "name": "\ud83d\udc24 External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39944325648/job/120383132253",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T11:11:22Z",
+      "completed_at": "2026-10-23T11:38:19Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120383133084,
+      "run_id": 39944325755,
+      "run_attempt": 1,
+      "name": "caller-permissions / \ud83d\udcdc Caller Permissions",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39944325755/job/120383133084",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T11:11:23Z",
+      "completed_at": "2026-10-23T11:31:23Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120389687313,
+      "run_id": 39944325755,
+      "run_attempt": 1,
+      "name": "shell-tests / \ud83d\udc1a Shell Tests",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39944325755/job/120389687313",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T11:28:22Z",
+      "completed_at": "2026-10-23T11:43:22Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120395520522,
+      "run_id": 39944325755,
+      "run_attempt": 1,
+      "name": "shell-tests / publish-test-summary / Publish test summary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39944325755/job/120395520522",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T11:43:24Z",
+      "completed_at": "2026-10-23T11:43:48Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120396556008,
+      "run_id": 39948389507,
+      "run_attempt": 1,
+      "name": "\ud83d\udc24 External Consumer Canary",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39948389507/job/120396556008",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T11:46:01Z",
+      "completed_at": "2026-10-23T12:13:05Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120396558975,
+      "run_id": 39948389727,
+      "run_attempt": 1,
+      "name": "quality / \ud83d\udee0\ufe0f Lintro Code Quality",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39948389727/job/120396558975",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T11:46:02Z",
+      "completed_at": "2026-10-23T11:50:16Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120396559060,
+      "run_id": 39948389727,
+      "run_attempt": 1,
+      "name": "support-catalog / \ud83d\udcda Support Catalog",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39948389727/job/120396559060",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T11:46:02Z",
+      "completed_at": "2026-10-23T12:06:02Z"
+    },
+    {
+      "repo": "lgtm-hq/lgtm-ci",
+      "id": 120396559177,
+      "run_id": 39948389727,
+      "run_attempt": 1,
+      "name": "caller-permissions / \ud83d\udcdc Caller Permissions",
+      "html_url": "https://github.com/lgtm-hq/lgtm-ci/actions/runs/39948389727/job/120396559177",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T11:46:02Z",
+      "completed_at": "2026-10-23T11:46:27Z"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "id": 120348672979,
+      "run_id": 39933918916,
+      "run_attempt": 1,
+      "name": "security / Security audit",
+      "html_url": "https://github.com/lgtm-raycast/.github/actions/runs/39933918916/job/120348672979",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T09:43:26Z",
+      "completed_at": "2026-10-23T10:03:26Z"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "id": 120362172367,
+      "run_id": 39933918916,
+      "run_attempt": 2,
+      "name": "security / Security audit",
+      "html_url": "https://github.com/lgtm-raycast/.github/actions/runs/39933918916/job/120362172367",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T10:17:07Z",
+      "completed_at": "2026-10-23T10:37:07Z"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "id": 120370055336,
+      "run_id": 39933918916,
+      "run_attempt": 2,
+      "name": "publish-security-summary / Publish security audit comment",
+      "html_url": "https://github.com/lgtm-raycast/.github/actions/runs/39933918916/job/120370055336",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T10:37:11Z",
+      "completed_at": "2026-10-23T10:52:11Z"
+    },
+    {
+      "repo": "lgtm-raycast/.github",
+      "id": 120375811379,
+      "run_id": 39933918916,
+      "run_attempt": 2,
+      "name": "Required CI",
+      "html_url": "https://github.com/lgtm-raycast/.github/actions/runs/39933918916/job/120375811379",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T10:52:15Z",
+      "completed_at": "2026-10-23T10:52:20Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120285473474,
+      "run_id": 39914689136,
+      "run_attempt": 1,
+      "name": "extension / Prepare Node Matrix",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39914689136/job/120285473474",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T06:57:29Z",
+      "completed_at": "2026-10-23T07:01:49Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120289667020,
+      "run_id": 39915829134,
+      "run_attempt": 1,
+      "name": "tracker / publish-test-summary / Publish test summary",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39915829134/job/120289667020",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T07:10:00Z",
+      "completed_at": "2026-10-23T07:18:03Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120296296468,
+      "run_id": 39918058717,
+      "run_attempt": 1,
+      "name": "pinning / Validate Action Pinning",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39918058717/job/120296296468",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T07:29:13Z",
+      "completed_at": "2026-10-23T07:32:33Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120333210304,
+      "run_id": 39928638206,
+      "run_attempt": 1,
+      "name": "security / Security audit",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39928638206/job/120333210304",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-23T09:05:05Z",
+      "completed_at": "2026-10-23T09:07:28Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120343098733,
+      "run_id": 39932240856,
+      "run_attempt": 1,
+      "name": "gate / \u2705 All Checks Passed",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39932240856/job/120343098733",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T09:29:35Z",
+      "completed_at": "2026-10-23T10:08:53Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120364293231,
+      "run_id": 39938631436,
+      "run_attempt": 1,
+      "name": "label / PR Labeler",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39938631436/job/120364293231",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "started_at": "2026-10-23T10:22:30Z",
+      "completed_at": "2026-10-23T10:32:30Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120364296861,
+      "run_id": 39938632972,
+      "run_attempt": 1,
+      "name": "gate / \u2705 All Checks Passed",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39938632972/job/120364296861",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T10:22:31Z",
+      "completed_at": "2026-10-23T10:35:41Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120373284689,
+      "run_id": 39938632972,
+      "run_attempt": 2,
+      "name": "gate / \u2705 All Checks Passed",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/39938632972/job/120373284689",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T10:45:39Z",
+      "completed_at": "2026-10-23T11:34:40Z"
+    },
+    {
+      "repo": "lgtm-raycast/brew",
+      "id": 120614730902,
+      "run_id": 40012082013,
+      "run_attempt": 1,
+      "name": "security / Security audit",
+      "html_url": "https://github.com/lgtm-raycast/brew/actions/runs/40012082013/job/120614730902",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-23T19:31:32Z",
+      "completed_at": "2026-10-23T19:31:55Z"
+    }
+  ],
+  "releases": [
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/releases/tag/diagnostic-1203-20261025-phase2",
+      "tag_name": "diagnostic-1203-20261025-phase2",
+      "assets": [
+        {
+          "id": 676261848,
+          "name": "dns-1203-phase2-evidence-20261025.tar.gz",
+          "size": 765912,
+          "digest": "sha256:9a491023a013d839cfdbd75a79a3ce450cb8eeb75b209d8a914f4ebb0d429a9b",
+          "browser_download_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/releases/download/diagnostic-1203-20261025-phase2/dns-1203-phase2-evidence-20261025.tar.gz",
+          "created_at": "2026-10-25T22:12:41Z",
+          "updated_at": "2026-10-25T22:12:41Z",
+          "download_count": 1
+        },
+        {
+          "id": 676261846,
+          "name": "SHA256SUMS",
+          "size": 107,
+          "digest": "sha256:f1e9c8795967e861e0f58aebc2d2ef4e1f553050ddc07413d9d533c1684c802a",
+          "browser_download_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/releases/download/diagnostic-1203-20261025-phase2/SHA256SUMS",
+          "created_at": "2026-10-25T22:12:41Z",
+          "updated_at": "2026-10-25T22:12:41Z",
+          "download_count": 0
+        }
+      ]
+    },
+    {
+      "repo": "TurboCoder13/lgtm-ci-consumer-fixture",
+      "html_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/releases/tag/diagnostic-1203-20261025",
+      "tag_name": "diagnostic-1203-20261025",
+      "assets": [
+        {
+          "id": 676094561,
+          "name": "dns-1203-evidence-20261025.tar.gz",
+          "size": 625330,
+          "digest": "sha256:a4e68a7e6892823c03d124f875296caf95dcba4c5c3cd663c5d7cbce8acc72b6",
+          "browser_download_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/releases/download/diagnostic-1203-20261025/dns-1203-evidence-20261025.tar.gz",
+          "created_at": "2026-10-25T20:51:09Z",
+          "updated_at": "2026-10-25T20:51:10Z",
+          "download_count": 0
+        },
+        {
+          "id": 676094560,
+          "name": "SHA256SUMS",
+          "size": 100,
+          "digest": "sha256:aa4267d7109465543e657229fec4eebeed5944ce8ebd34bccfdaed406ab62691",
+          "browser_download_url": "https://github.com/TurboCoder13/lgtm-ci-consumer-fixture/releases/download/diagnostic-1203-20261025/SHA256SUMS",
+          "created_at": "2026-10-25T20:51:09Z",
+          "updated_at": "2026-10-25T20:51:10Z",
+          "download_count": 0
+        }
+      ]
+    }
+  ],
+  "snapshotNote": "The corrected run uses its terminal record. Other references retain the dated audit snapshots. Observation dates do not identify the introduction date."
+}

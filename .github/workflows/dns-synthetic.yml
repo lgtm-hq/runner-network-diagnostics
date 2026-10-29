@@ -1,0 +1,136 @@
+---
+name: runner-dns-synthetic
+run-name: Synthetic DNS conflict — ${{ github.ref_name }}
+"on":
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: runner-dns-1203-synthetic
+  cancel-in-progress: false
+jobs:
+  probe:
+    if: >-
+      github.repository == 'lgtm-hq/runner-network-diagnostics' &&
+      github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        arm: [C0, I1, I2, I3]
+        replicate: [1, 2, 3, 4]
+    env:
+      SYNTHETIC_REPLICATE: ${{ matrix.replicate }}
+    steps:
+      - name: Synthetic baseline capture and owned induction before hardener pre
+        if: always()
+        id: induce
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/synthetic-induce@2a200f13f51248ecdb2e0198c2555b785f72242b
+        with:
+          arm: ${{ matrix.arm }}
+          hosted: ${{ runner.environment }}
+      - name: Synthetic early override or prepare same-host repair
+        if: always()
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/synthetic-treatment@2a200f13f51248ecdb2e0198c2555b785f72242b
+      - name: Register synthetic treatment cleanup above hardener post
+        if: always()
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/synthetic-guard@2a200f13f51248ecdb2e0198c2555b785f72242b
+      - name: Harden using original failing pin and unchanged block policy
+        # Full immutable hardener SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2
+        with:
+          egress-policy: block
+          allowed-endpoints: |
+            github.com:443
+            api.github.com:443
+            codeload.github.com:443
+            objects.githubusercontent.com:443
+            results-receiver.actions.githubusercontent.com:443
+      - name: Capture effective resolver before application steps
+        if: always() && steps.induce.outputs.in_scope == 'true'
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@2a200f13f51248ecdb2e0198c2555b785f72242b
+        with:
+          mode: snapshot
+      - name: Real checkout after synthetic measurements
+        if: steps.induce.outputs.in_scope == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Public API independently of checkout
+        if: always() && steps.induce.outputs.in_scope == 'true'
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@2a200f13f51248ecdb2e0198c2555b785f72242b
+        with:
+          mode: api
+      - name: Prepare synthetic payload
+        if: always() && steps.induce.outputs.in_scope == 'true'
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@2a200f13f51248ecdb2e0198c2555b785f72242b
+        with:
+          mode: payload
+      - name: Upload payload
+        if: always() && steps.induce.outputs.in_scope == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: >-
+            ci1203-synthetic-payload-${{ matrix.arm }}-${{ matrix.replicate }}
+          path: ${{ runner.temp }}/ci1203/payload.txt
+          if-no-files-found: error
+          retention-days: 90
+      - name: Download payload
+        if: always() && steps.induce.outputs.in_scope == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: >-
+            ci1203-synthetic-payload-${{ matrix.arm }}-${{ matrix.replicate }}
+          path: ${{ runner.temp }}/ci1203-roundtrip
+      - name: Verify artifact roundtrip
+        if: always() && steps.induce.outputs.in_scope == 'true'
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@2a200f13f51248ecdb2e0198c2555b785f72242b
+        with:
+          mode: roundtrip
+      - name: Confirm explicitly unallowed traffic is locally blocked
+        if: always() && steps.induce.outputs.in_scope == 'true'
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/vendor/network-probe@2a200f13f51248ecdb2e0198c2555b785f72242b
+        with:
+          mode: negative
+      - name: Freeze all synthetic diagnostic observations even on failure
+        if: always()
+        # Full immutable helper SHA cannot be wrapped.
+        # yamllint disable-line rule:line-length
+        uses: lgtm-hq/runner-network-diagnostics/scripts/synthetic-finish@2a200f13f51248ecdb2e0198c2555b785f72242b
+      - name: Preserve synthetic diagnostics and checksums
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: >-
+            ci1203-synthetic-evidence-${{ matrix.arm }}-${{ matrix.replicate }}
+          path: |
+            ${{ runner.temp }}/ci1203/*.txt
+            ${{ runner.temp }}/ci1203/SHA256SUMS
+            ${{ runner.temp }}/ci1203-synthetic-*/*.json
+            ${{ runner.temp }}/ci1203-synthetic-*/*.txt
+            ${{ runner.temp }}/ci1203-synthetic-*/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 90
