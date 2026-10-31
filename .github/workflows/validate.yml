@@ -12,9 +12,12 @@ permissions: {}
 jobs:
   validate:
     # yamllint disable-line rule:line-length
-    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-validate.yml@614c5ad1fc91d742baed959643bdd1f261a71210 # v0.79.1
+    uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-validate.yml@42aad382e0ca51e425a24f54053c298e588a9862  # v0.82.2
     permissions:
       contents: read
+      # GitHub validates the optional nested publisher's permissions even when
+      # publish-validation-report is disabled (the default).
+      pull-requests: write
     with:
       egress-policy: audit
       script: scripts/ci/validate.sh
