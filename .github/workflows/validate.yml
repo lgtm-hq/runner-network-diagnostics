@@ -15,6 +15,9 @@ jobs:
     uses: lgtm-hq/lgtm-ci/.github/workflows/reusable-validate.yml@42aad382e0ca51e425a24f54053c298e588a9862  # v0.82.2
     permissions:
       contents: read
+      # GitHub validates the optional nested publisher's permissions even when
+      # publish-validation-report is disabled (the default).
+      pull-requests: write
     with:
       egress-policy: audit
       script: scripts/ci/validate.sh
