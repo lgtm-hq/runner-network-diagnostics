@@ -23,6 +23,7 @@ jobs:
       github.repository == 'lgtm-hq/runner-network-diagnostics' &&
       github.event.repository.private == false &&
       github.ref == 'refs/heads/main' && github.run_attempt == 1
+    # Incident 1203: preserve the measured native DNS runner placement.
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     strategy:
@@ -176,6 +177,7 @@ jobs:
       github.event.repository.private == false &&
       github.ref == 'refs/heads/main' && github.run_attempt == 1 &&
       inputs.include_drills == true
+    # Incident 1203: rollback drills must use the same native runner image.
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     strategy:

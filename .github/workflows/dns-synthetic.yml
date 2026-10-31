@@ -13,6 +13,7 @@ jobs:
     if: >-
       github.repository == 'lgtm-hq/runner-network-diagnostics' &&
       github.ref == 'refs/heads/main'
+    # Incident 1203: preserve the exact-source synthetic DNS baseline.
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     strategy:
